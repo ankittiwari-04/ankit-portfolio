@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ankit Tiwari — Solana &amp; Rust Engineer</title>
+  <meta name="description" content="Ankit Tiwari — Solana &amp; Rust Smart Contract Engineer (Rektoff Cohort 6, Turbin3 Q3 2026 Graduate). Building DeFi primitives, RWA vaults, agentic commerce rails, and developer tools." />
+  <meta property="og:title" content="Ankit Tiwari — Solana &amp; Rust Engineer" />
+  <meta property="og:description" content="I build Solana programs and developer tools in Rust. Graduate of Turbin3 Builders Cohort &amp; Student in Rektoff Cohort 6." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ankittiwari.vercel.app" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@tiwariankit04" />
+  <meta name="twitter:title" content="Ankit Tiwari — Solana &amp; Rust Engineer" />
+  <meta name="twitter:description" content="I build Solana programs and developer tools in Rust. Interested in DeFi primitives, smart contract security, and how things work under the hood." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0a0a' stroke='%23333' stroke-width='1.5'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%23f5f5f5' font-family='monospace' font-weight='bold' font-size='15'%3EAT%3C/text%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      background-color: #000000;
+      color: #a3a3a3;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Subtle diagonal hatch border strips matching the reference portfolio */
+    .hatch-strip {
+      width: 14px;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 255, 255, 0.055) 0px,
+        rgba(255, 255, 255, 0.055) 1px,
+        transparent 1px,
+        transparent 6px
+      );
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .ascii-art {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 6.2px;
+      line-height: 7.2px;
+      letter-spacing: 0.4px;
+      color: rgba(212, 212, 212, 0.44);
+      user-select: none;
+      white-space: pre;
+      pointer-events: none;
+    }
+    .link-underline {
+      color: #f5f5f5;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(255, 255, 255, 0.35);
+      transition: text-decoration-color 0.2s ease, color 0.2s ease;
+    }
+    .link-underline:hover {
+      color: #ffffff;
+      text-decoration-color: #ffffff;
+    }
+    .sub-link {
+      color: #a3a3a3;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(163, 163, 163, 0.4);
+      transition: color 0.15s ease, text-decoration-color 0.15s ease;
+    }
+    .sub-link:hover {
+      color: #f5f5f5;
+      text-decoration-color: #f5f5f5;
+    }
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      background-color: #1c1c1c;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #e5e5e5;
+      transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+    }
+    .social-btn:hover {
+      background-color: #2a2a2a;
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+      color: #ffffff;
+    }
+    .project-thumb {
+      width: 148px;
+      height: 92px;
+      background-color: #0b0b0b;
+      border: 1px solid #1f1f1f;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .project-row:hover .project-thumb {
+      border-color: #383838;
+    }
+    /* Timeline line & dots */
+    .timeline-line {
+      position: absolute;
+      left: 109px;
+      top: 10px;
+      bottom: 12px;
+      width: 1px;
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    .timeline-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 9999px;
+      background-color: #8c8c8c;
+      border: 1px solid #000;
+      position: relative;
+      z-index: 2;
+      margin-top: 7px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 640px) {
+      .timeline-line {
+        display: none;
+      }
+      .project-thumb {
+        width: 100%;
+        height: 130px;
+      }
+    }
+  </style>
+</head>
+<body id="top" class="bg-black text-[#a3a3a3] selection:bg-white/20 selection:text-white">
+
+  <!-- Top-Right Fixed Controls ("Upload photo" + "Pause motion") -->
+  <div class="fixed top-4 right-5 z-40 flex items-center gap-3">
+    <button id="openPhotoModalBtn" type="button" class="hidden text-xs text-[#8e8e8e] hover:text-white transition-colors bg-black/80 backdrop-blur px-2.5 py-1 rounded border border-white/10 hover:border-white/25" title="Upload your photo to replace the right-side ASCII portrait">
+      Upload photo
+    </button>
+    <button id="toggleMotionBtn" type="button" class="text-xs text-[#8e8e8e] hover:text-white transition-colors bg-black/80 backdrop-blur px-2 py-1 rounded">
+      Pause motion
+    </button>
+  </div>
+
+  <!-- Fixed Bottom-Left ASCII Art: Ferris the Rust Crab -->
+  <div class="hidden xl:block fixed bottom-6 left-3 z-10 pointer-events-none">
+    <pre id="asciiCrab" class="ascii-art"></pre>
+  </div>
+
+  <!-- Fixed Right-Side ASCII Art: Portrait Silhouette (Customizable via Upload Photo) -->
+  <div class="hidden lg:flex fixed top-1/2 -translate-y-1/2 right-3 z-10 flex-col items-end pointer-events-none">
+    <pre id="asciiPortrait" class="ascii-art"></pre>
+  </div>
+
+  <!-- Main Centered Layout with Left & Right Diagonal Hatch Borders -->
+  <div class="min-h-screen max-w-[748px] mx-auto flex justify-center">
+    <!-- Left Diagonal Hatch Border -->
+    <div class="hidden sm:block hatch-strip shrink-0"></div>
+
+    <!-- Center Content Column -->
+    <main class="flex-1 max-w-[720px] px-6 sm:px-12 pt-16 pb-14">
+
+      <!-- HERO HEADER -->
+      <header class="mb-14">
+        <h1 class="text-[2.5rem] sm:text-[2.85rem] font-bold tracking-tight text-[#f5f5f5] leading-none mb-5">
+          Ankit Tiwari
+        </h1>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-relaxed mb-3.5">
+          I build Solana programs and developer tools in Rust.
+        </p>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-relaxed mb-7">
+          Interested in DeFi primitives, smart contract security, and how things work under the hood. Based in India.
+        </p>
+
+        <!-- 4 Circular Social Icon Buttons -->
+        <div class="flex items-center gap-3">
+          <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" title="GitHub (@ankittiwari-04)">
+            <svg class="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </a>
+          <a href="https://x.com/tiwariankit04" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X (Twitter)" title="X (@tiwariankit04)">
+            <svg class="w-[16px] h-[16px]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/in/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn" title="LinkedIn (ankittiwari-04)">
+            <svg class="w-[16px] h-[16px]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+            </svg>
+          </a>
+          <a href="mailto:ankittiwari.contact@gmail.com" class="social-btn" aria-label="Email" title="Email ankittiwari.contact@gmail.com">
+            <svg class="w-[17px] h-[17px]" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <rect width="20" height="16" x="2" y="4" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </a>
+        </div>
+      </header>
+
+      <!-- ABOUT SECTION -->
+      <section id="about" class="mb-14">
+        <h2 class="text-[20px] font-bold text-[#f5f5f5] tracking-tight mb-4">about</h2>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-[1.75] mb-4">
+          I'm a developer working on Solana programs, on-chain financial primitives, and developer tooling, mostly in Rust with Anchor, Token-2022, and TypeScript. My projects include multi-asset RWA vaults with Dutch-auction rebalancing, autonomous agent spending guardrails, wallet-native checkout flows, and trustless escrow systems.
+        </p>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-[1.75]">
+          I'm currently studying Rust and Solana security through Rektoff Cohort 6, and exploring smart contract auditing and adversarial invariant testing on Solana. I also write technical breakdowns of the protocols and security mechanics I'm researching.
+        </p>
+      </section>
+
+      <!-- EXPERIENCE & EDUCATION SECTION -->
+      <section id="experience" class="mb-16">
+        <h2 class="text-[20px] font-bold text-[#f5f5f5] tracking-tight mb-6">experience &amp; education</h2>
+
+        <div class="relative space-y-8">
+          <div class="timeline-line"></div>
+
+          <!-- Item 1: Rektoff -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 relative">
+            <div class="sm:w-[96px] sm:text-right text-[12.5px] text-[#8a8a8a] leading-snug shrink-0 pt-0.5">
+              <div class="text-[#b0b0b0]">2026</div>
+              <div>Oct - present</div>
+            </div>
+            <div class="hidden sm:block timeline-dot"></div>
+            <div class="flex items-start gap-3.5 flex-1">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAIAAAD8RQT7AAAEs0lEQVR4nM2ZTYgcRRTH/6+qtz9mdpbdBL8OKktwjwoiiAaSoyh4CuJnguAHnoKgrJ7Er42gCYboJTeJH2DMQbyIogfRqyAe4sF4yZ5ERXcz2109XV3PQ8/29nRXf8ys7PrYw07P61e/evXqvXo1BACA4zhBEAghhBDYQzHGGGOiKNJaAyAAvu/7vk9Ee8lRFGZWSimlnMwr+8WRCRH5vq+1Fr7v7y9KJhmQkFLuN8lYpJTOtGHLzKUnuQVjTFGHiKaKRSGEMy1HPkB1pByLmZmZiIwxUzF1pZlqurla9o8xpuMKtNPkSzNDKspekVJmi9g6k5YBcpfsMisSUbZ8s9PMFox1NEKIjGkWmv8QJQcqWrZKU9y0orBk9rk6I7pGBMuLmbV8x3WlKW3mOklvS9WzipfKc3U/c90vXeImIKtBC00G3mWB+AAnRxO+qWxa36URw/3WbfaQJWO1DrkztuTRkVH0SMRey9bggxy9GiV3J4wmTUtar2rUeSU5nISnwmgtUk8o9suG5E9y7ps5eVkiBQBzyGyd2xrdP2oGaqGpA9Irenh+aJYNAkQvRfGxuKTgv+/PPzM/eHQgfxyXYb6Zw7UwOZxUh6iLHguN1TfyivQueYgAAPMI3wjVw6q4ZJQQxST+EIPjA+c7BwkA8I289d5WcrsFKEs/M9KQoeB04F3wxo73Eb4Zxo/HqBzUxDXRX+3PfTUHMwaKT5QdWSdlmoatJDZE752ed84bf+4huS/hBUtYiHURvBtAbX/ufIJq31MMZhr/QaH3ds/91EUMECALBgg7agSKqDV8q7WvnG+qvkkPpaOHRhOPDCik0j6Pj8X6Tr0zhwXGXAtNVdpPFGbZqJOqVS15MElgidapZE+7p1Zp9w1tkvx5Mg4dpLem6Nu0NcSvgpKJ5RbrXedMS0tL5UeTocMBm+tN8cnogVH0fISBzV4K95Lrn/WLFYqGJP6yA5USYDvNxMvE5haz+cUmX8cAxrsmU2fkAMHLgf+xjxTWqlmHAmudqn1ZcnI02fx8G8VArIs8qchfxhUKgFpV6rhqjclOlaFOknuTcC3kG8YmnO8d/6xPG+PZe+c994ILDQB8gNULSp1QU5VMO03epBVFr+jhB0OzPP7K+cEZPDaQV2U+nPhH9Nf63ode5iE+yNGpKHouqgOyHtrtdaqqJ3+T3iceQgBwvnZ6L/aqRzsKKXgrcD9ysV2X4pOxelKxtABZTwq1Z7/ySCkFpwNopCtp75WevGqvPWIo+q/36RrFT8UIwIscrUYUkn9x4u4hG6I6Z0tlqAtksSH6r/UZ3LxTKKLemR5cxE/HEMAi9D0aFzvN2eKbvBOzdnQTKCOIP4URBgAKpwaKKTgTmEWjj2gQ8kjPObL+3GK8mm/QuZkyCyZdSeEBgLwsxd8T9KZv0jtSEMTvQl7ZWdmGDsZO0x1oWmluyGvzTR5Arc1zd2lt05qqphAiR9m9h6xprDxi89fFXnX3KK3r3uFEMXnZMZWTimvd5cVOd1vFXrW76RnmMMW9XzExNvTqvC1ZuprKl073S7mq6bpgKt77dUcxxog0TdsV90TSNBVKtfcDeyDZTw1Ca/1/AFJKaa3/BY6zZG2XAwDWAAAAAElFTkSuQmCC" alt="Rektoff" class="w-9 h-9 rounded bg-[#0c1a0e] border border-white/10 shrink-0 mt-0.5 object-cover" />
+              <div>
+                <h3 class="text-[15.5px] font-semibold text-[#f5f5f5] leading-snug mb-1">
+                  <a href="https://rektoff.xyz" target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">Rektoff</a>
+                </h3>
+                <p class="text-[14.5px] text-[#a8a8a8] leading-relaxed">
+                  Student in <strong class="text-[#f0f0f0] font-semibold">Cohort 6</strong>. Studying Rust and Solana security, vulnerability auditing, and low-level runtime internals.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: Turbin3 -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 relative">
+            <div class="sm:w-[96px] sm:text-right text-[12.5px] text-[#8a8a8a] leading-snug shrink-0 pt-0.5">
+              <div class="text-[#b0b0b0]">2026</div>
+              <div>Aug - Oct</div>
+            </div>
+            <div class="hidden sm:block timeline-dot"></div>
+            <div class="flex items-start gap-3.5 flex-1">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAIAAAD8RQT7AAAI7ElEQVR4nO2Y2W8b1xXGf3eGQ0oiqd2iRW2WZVG7bEuOE9tykrpJH1KkCdKXokD70H+mbwG6AEXRhwJ5S4EErRvnwYnd2IhsJXZsy3ZkWTu1USIl7js5c/ugoUVJpJd0QVHk4DwM7tw555tzvnPOxYXv5Xv5Xv5/RXz3DzULNhsWDSFAgkBK8nmyGXI5pPxORsULAlJVKiux23G30NuPy41VM03ldAKbTE+xukw8RjpFPv+CaFTlefcqCk4nrS0MDnHYzcoq9ydZ9pLJsBMdqxV3KwPDHOkkHObhJCteImF0/TlzILCoT91QCLim0dLMyAlczXx5g4ffIuXu24Nmj/Uw9gMSce58RcCPxYKjmnSK4Db5XHk02tPRAAKbld5jvDzK7CLXx9ENECgKlZXYq1At5kbDIJkkmUTX0TTsDl59g5On2fDRcIjRs0z8gw/+yOZ6OU8WlDKZktKMv83K6BB93Vy5zoIXATYrDQ3U1eFy4W6hohKhgCCbxbfBxjq6QXsn/ScYHGHoFHWNCIVElI8+IJVAlCWrpdQLCZjrVgt9R+k7yqdX2QygKjgdHO2gp4eKSqZn+OTvxGIYIMBhx9PHhTcZu0D/CaqqkQoooGBIpu5y5yaJGIowQ14KTanU7Iii0NLEy4N8PoF/C1WhsZ6TgzS7GL/F7GJhu2An28kkDyfxeDhUj90GOVCRCqiEtliaQVGwaOhlC61kbApSXcWIh7llvOuoCo11nBtBl/zlIunM7oeiiM2ebn70Bp1tiBxSBQNU9CyXP+LGdXoHCG8T8JdzqKCIPaoKbBZsFiqtdLhoa+KrB9g06ms41Y8quDKOYWDVsBXUqqFZUAX2Kt78ISNDKHlEkXpn+ewTrl6iyk5LO1brfqcF3RsbReBpZqgDBJqGpw0peOcsCFwNnOjh+j1+PAYCFAADEmnCMVZ8+AMM9PLaGRprkHmQZmDyWSa+YHkBw+DWOMdHWV0iFCyTKaUIjaYy0smvf47DjlRBMbMuVZOPPzlnrhsqoTgP5pmcZWGNcAS9jtfP0NOByEEhR8LgwT2SUawWhGB5gVcv4HASCZs1+zTe6AZXHvK3r3n3FPYq2IGiI9QCHw3QkSr+LT69yYefMTWPYaAqvHkeVx1f32Z4gCYXqCAJRfnoQ2yV1NWxvkY+z9oyTS62A2TSpXizU/1mDxAE47x/iYu3SCb25F7kd9mQjnPta/70Md/OISWKQnszxz3MzfP+H/jiOqkoIg9ZJm5w5xsm79FQR7UTIZiZorMTu32P34IerCmJL8xvLnOkkeE2HFWFsBugmPFf9XFpnNVNNJVjrYz0cbKPRIZLd5lb5LNr9HcxPMiqj8uXWfehqvR5cDoIhwn4qa/DZkVwsOXs5Q0SKZAQTXF/hVkfP30JR6UZdhSQIEkmyGXpbafWyTvneftVqp1c/JJcDiF4PId3mf4urn7B5EP0PLkcmorFghAYebRCIbMf0L7uJ3iyJ5biz7fI6Zztpt5JMIVUTC5HYpzqxgBXA+cHqLEi87Q20NrEwiqRGIkYj2e4dhP/FkKYJShAERgCRSJkyT5nQRTPqUIXUxQMyVqI337OHS8vd3F1GmMHZtE/bYZpa6CtHlUjGCQYRgiqKshm+PQqj+aQEiFQQEgUEAJFAaNoVO2LzZ6hWfQur2PTCCWYmKdC49Y8sTSAIqi0oqpEk1RYCYRY9NF/BP8WmSyK4Kgbf4CJ+8TiZjpsNowc0kARCAWZN+N0QJSS3EY32IzQVo8QpHJsRug5vFt3zbWMeai1k8kxMc3vLvL7v5LNMnoMzYJmYfIxi+u71jpbiUZIJhGCQw3EIuj5kn7LoMnpzPkZcCMEmTxbcTyHd8ObytJSy3ujuGowJPEU9xaYW6O7mU4XC2vMrpDN7VrrOUIoTDyJEPQcZWXVHHMlKrxUxNAN/DHGulEEUhJNk9dpr2c1BLAVZynAz07jaeK2F18UwOXgRDtrHj6eIJXdNdtUj81CJIauIwQdzYx/QzZb0m+5GS7J5NiO43Ex6yecYCHAmS4u3iOrY0jurzLk5lfneK2bYApUap001mLkmFnj9kLBvMorffg2CQQRgtZDZNIkklC6phRRJGY17jxk8kxv8EoXqiCrsxwkmuJMF6pAQDjJ+DwP1+io5YSb48101FAlON7K+V4OOU2evuTBMFhcN6N1eoDlNZKpJ6nZJ/tOFKAI05CUbESIpRjtQBHEMjxYo7qSsW5zBM75uTxFKImQKLo5Opwqb/RxvAObxpkemuv4dpFgFAX6j4CBL0BO3/W1VxWzg5gqEAKlQKtklgdr9DbjrgXJdoK7y1RovDWEu5ZklpsLfDlvTmNhmFPM08B7I/zyPA0O7s2zEURKGqsZ7mTGSyhmNh4zD3t0T02JfSQ3JBtRpnyc76bBgZQEYtxdYT3CqSO8fZyaKiYW8QZ3jwfCwCo53Y7UuT3PehDdoLqKc/14N1gJmFwuo/tryjxVPjlZ5nRmN3HYuNDL+DwbEcJJpnxsx6mppLYKRwWBBG21WFQTkARV4guxFUNAo5OzPUSTTK+Y7VGang7SuExNFa9l8kyuks7xmodZP5PL5PKshtiI4KjAu40/SsUZhtwFU5LlIMEEiqDPzWALS9s8WidZOEqL/R6ehqbEvnROTm8Qz9DtomuUb7zCu40uiaSIpGQ0TY+Lo404bOb+pW00C++eNHvBSlCkskDpP392bA6IyOald5tIiuZahlvluWOshZjZFIGYiKXltVkG3Yx1mb9yuIbORh5v4gsTSoicbnL2WfcWZXrxHjHzLKQklJCxNOsh7DYaHZzulLVVqAqVVnRJPIPDxkaMy4+48oh4RuR0KBqQ/3JsZNEpQgJCN8zsbCdYDqEVyDvu5BeneaufpW1m/SKcKuP+ae6eiWYXR7EhAWTzZPUnb2UowfU5Bt0sBdmMviiOAprnytSePTvXVkXnWgGgS24sYNPYiLIVL3NseoYvIYY7ngn5ILqDhiUgBBUWdCmyL3al9USet6aKpeQH5mI6D89m678TzX9OnvvS778i/1to/gmZOqFc+OV6sAAAAABJRU5ErkJggg==" alt="Turbin3" class="w-9 h-9 rounded bg-[#071918] border border-white/10 shrink-0 mt-0.5 object-cover" />
+              <div>
+                <h3 class="text-[15.5px] font-semibold text-[#f5f5f5] leading-snug mb-1">
+                  <a href="https://turbin3.org" target="_blank" rel="noopener noreferrer" class="link-underline">Turbin3</a>
+                </h3>
+                <p class="text-[14.5px] text-[#a8a8a8] leading-relaxed">
+                  Graduate of the <strong class="text-[#f0f0f0] font-semibold">Builder program</strong> (Q3 2026) and recognized as Week 4 Builder in Public. Built <a href="#strata-protocol" class="sub-link text-[#d4d4d4]">Strata Protocol</a> as my Turbin3 capstone project.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: Open Source Solana Contributions -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 relative">
+            <div class="sm:w-[96px] sm:text-right text-[12.5px] text-[#8a8a8a] leading-snug shrink-0 pt-0.5">
+              <div class="text-[#b0b0b0]">2026</div>
+              <div>Sep - present</div>
+            </div>
+            <div class="hidden sm:block timeline-dot"></div>
+            <div class="flex items-start gap-3.5 flex-1">
+              <div class="w-9 h-9 rounded bg-[#141414] border border-white/15 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-[#14F195]" viewBox="0 0 397 311" fill="currentColor">
+                  <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zm0-164.2c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7zm326.6 81.6c-2.4-2.4-5.7-3.8-9.2-3.8H64.6c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-[15.5px] font-semibold text-[#f5f5f5] leading-snug mb-1">
+                  Solana Open Source
+                </h3>
+                <p class="text-[14.5px] text-[#a8a8a8] leading-relaxed">
+                  <strong class="text-[#f0f0f0] font-semibold">Contributor.</strong> Shipped pre-flight agent spending mandate verification to <a href="https://github.com/sendaifun/solana-agent-kit/pull/641" target="_blank" rel="noopener noreferrer" class="sub-link">sendaifun/solana-agent-kit</a>, Pyth oracle staleness assertions to <a href="https://github.com/ondoprotocol/global-markets-solana/pull/5" target="_blank" rel="noopener noreferrer" class="sub-link">ondoprotocol/global-markets-solana</a>, and Anchor test suite updates to <a href="https://github.com/solana-foundation/program-examples" target="_blank" rel="noopener noreferrer" class="sub-link">solana-foundation/program-examples</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: KIET Group of Institutions -->
+          <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4 relative">
+            <div class="sm:w-[96px] sm:text-right text-[12.5px] text-[#8a8a8a] leading-snug shrink-0 pt-0.5">
+              <div class="text-[#b0b0b0]">2022-2026</div>
+              <div>expected</div>
+            </div>
+            <div class="hidden sm:block timeline-dot"></div>
+            <div class="flex items-start gap-3.5 flex-1">
+              <div class="w-9 h-9 rounded bg-[#151824] border border-blue-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-[15.5px] font-semibold text-[#f5f5f5] leading-snug mb-1">
+                  KIET Group of Institutions
+                </h3>
+                <p class="text-[14.5px] text-[#a8a8a8] leading-relaxed">
+                  <strong class="text-[#f0f0f0] font-semibold">B.Tech in Computer Science &amp; Engineering.</strong> Pursuing undergraduate degree (AKTU Affiliated, CGPA: 7.6/10). Won 1st Place at Innotech'24 (CS Branch).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED PROJECTS SECTION -->
+      <section id="projects" class="mb-16">
+        <h2 class="text-[20px] font-bold text-[#f5f5f5] tracking-tight mb-6">featured projects</h2>
+
+        <div class="space-y-9">
+
+          <!-- Project 1: Strata Protocol -->
+          <article id="strata-protocol" class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <button type="button" data-project-modal="strata" class="project-thumb group cursor-pointer text-left" title="Inspect Strata Protocol Architecture">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#090b0a"/>
+                <circle cx="112" cy="46" r="28" fill="url(#strataGlow)" opacity="0.25"/>
+                <defs>
+                  <radialGradient id="strataGlow" cx="0.5" cy="0.5" r="0.5">
+                    <stop offset="0%" stop-color="#4ade80"/>
+                    <stop offset="100%" stop-color="#090b0a" stop-opacity="0"/>
+                  </radialGradient>
+                </defs>
+                <text x="12" y="42" fill="#e5e5e5" font-family="Inter, sans-serif" font-weight="700" font-size="11" letter-spacing="1.2">STRATA</text>
+                <text x="12" y="54" fill="#6b7280" font-family="JetBrains Mono, monospace" font-size="6.2">DUAL-VAULT RWA &amp; PYTH</text>
+                <ellipse cx="108" cy="46" rx="18" ry="24" stroke="#4ade80" stroke-width="1.2" stroke-opacity="0.7" fill="#0f1712"/>
+                <ellipse cx="108" cy="46" rx="11" ry="15" stroke="#22c55e" stroke-width="0.9" stroke-dasharray="2 2"/>
+                <circle cx="108" cy="46" r="3.5" fill="#4ade80"/>
+              </svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://github.com/Gidy515/Strata-protocol" target="_blank" rel="noopener noreferrer" class="link-underline">Strata Protocol</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">experimental · devnet</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                Dual-vault RWA yield and 4-asset thematic basket protocol on Solana with permissionless Dutch-auction rebalancing. Built with Rust, Anchor, Pyth PriceUpdateV2, Token-2022, and LiteSVM.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://github.com/Gidy515/Strata-protocol" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+                <span>·</span>
+                <button type="button" data-project-modal="strata" class="sub-link cursor-pointer bg-transparent border-0 p-0">protocol &amp; documentation</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2: ArcenEmbed Studio -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <a href="https://arcenpay-embed-studio.vercel.app" target="_blank" rel="noopener noreferrer" class="project-thumb block" title="Open ArcenEmbed Studio Live Demo">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#090912"/>
+                <rect x="14" y="12" width="120" height="68" rx="4" fill="#0f1123" stroke="#6366f1" stroke-opacity="0.45" stroke-width="1"/>
+                <circle cx="22" cy="19" r="2" fill="#ef4444"/>
+                <circle cx="29" cy="19" r="2" fill="#eab308"/>
+                <circle cx="36" cy="19" r="2" fill="#22c55e"/>
+                <text x="45" y="21" fill="#818cf8" font-family="JetBrains Mono, monospace" font-size="5.8">x402 · &lt;50ms mandate</text>
+                <rect x="21" y="28" width="62" height="18" rx="2" fill="#171936" stroke="#4f46e5" stroke-opacity="0.35"/>
+                <text x="26" y="39" fill="#c7d2fe" font-family="JetBrains Mono, monospace" font-size="6.5">USDC · Solana</text>
+                <rect x="88" y="28" width="39" height="18" rx="2" fill="#312e81"/>
+                <text x="95" y="39" fill="#e0e7ff" font-family="Inter, sans-serif" font-weight="600" font-size="6.5">Verify</text>
+                <rect x="21" y="52" width="106" height="20" rx="2" fill="#111329"/>
+                <text x="26" y="64" fill="#34d399" font-family="JetBrains Mono, monospace" font-size="6">✓ Ed25519 Allowance Active</text>
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://arcenpay-embed-studio.vercel.app" target="_blank" rel="noopener noreferrer" class="link-underline">ArcenEmbed Studio</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">development tool · prerelease</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                Iframeless wallet-native billing, subscription checkout, and sub-50ms x402 autonomous AI agent spending mandate UI across Solana, EVM, and Stellar Soroban.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://arcenpay-embed-studio.vercel.app" target="_blank" rel="noopener noreferrer" class="sub-link">website</a>
+                <span>·</span>
+                <a href="https://github.com/ankittiwari-04/arcenpay-embed-studio" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3: Aegis Agent Firewall (Solana Agent Kit) -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <a href="https://github.com/sendaifun/solana-agent-kit/pull/641" target="_blank" rel="noopener noreferrer" class="project-thumb block" title="View PR #641 on GitHub">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#0d0b08"/>
+                <rect x="20" y="16" width="30" height="16" rx="2" stroke="#f59e0b" stroke-opacity="0.55" fill="#18130a"/>
+                <text x="26" y="26" fill="#fcd34d" font-family="JetBrains Mono, monospace" font-size="6">AGENT</text>
+                <line x1="50" y1="24" x2="64" y2="24" stroke="#f59e0b" stroke-opacity="0.5"/>
+                <rect x="64" y="13" width="36" height="22" rx="3" stroke="#fbbf24" fill="#241b0b"/>
+                <text x="71" y="26" fill="#fef3c7" font-family="JetBrains Mono, monospace" font-weight="600" font-size="6.5">AEGIS</text>
+                <line x1="100" y1="24" x2="114" y2="24" stroke="#22c55e" stroke-opacity="0.6"/>
+                <rect x="114" y="16" width="20" height="16" rx="2" stroke="#22c55e" stroke-opacity="0.6" fill="#0b1f13"/>
+                <text x="118" y="26" fill="#86efac" font-family="JetBrains Mono, monospace" font-size="6">TX</text>
+                <rect x="30" y="50" width="88" height="24" rx="2" stroke="#78350f" fill="#14100a"/>
+                <text x="38" y="64" fill="#d97706" font-family="JetBrains Mono, monospace" font-size="6">mandate_guard::verify()</text>
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://github.com/sendaifun/solana-agent-kit/pull/641" target="_blank" rel="noopener noreferrer" class="link-underline">Aegis Agent Firewall</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">security tooling · solana-agent-kit</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                Pre-flight spending mandate verification guardrail and action plugin for autonomous Solana AI agents, enforcing daily allowances, recipient whitelists, and slippage bounds before signing.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://github.com/sendaifun/solana-agent-kit/pull/641" target="_blank" rel="noopener noreferrer" class="sub-link">pull request #641</a>
+                <span>·</span>
+                <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4: OpenBounty -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <button type="button" data-project-modal="openbounty" class="project-thumb cursor-pointer text-left" title="Inspect OpenBounty Flow">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#0b0a08"/>
+                <path d="M28 70 Q42 25 118 64" stroke="#eab308" stroke-width="1.5" fill="none"/>
+                <line x1="24" y1="18" x2="24" y2="74" stroke="#3f3f46" stroke-width="1"/>
+                <line x1="24" y1="74" x2="126" y2="74" stroke="#3f3f46" stroke-width="1"/>
+                <circle cx="62" cy="49" r="3" fill="#fde047"/>
+                <text x="68" y="38" fill="#fef08a" font-family="JetBrains Mono, monospace" font-size="7.5">Ed25519 = 1</text>
+              </svg>
+            </button>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="link-underline">OpenBounty</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">escrow protocol · devnet</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                Trustless GitHub issue bounty escrow on Solana. Maintainers pre-fund issues into PDA vaults, and merged pull requests trigger Ed25519-attested atomic USDC payouts to contributors.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+                <span>·</span>
+                <button type="button" data-project-modal="openbounty" class="sub-link cursor-pointer bg-transparent border-0 p-0">specification</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 5: KnowledgeAI & CardPulse -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <a href="https://rag-chatbot-ten-delta.vercel.app" target="_blank" rel="noopener noreferrer" class="project-thumb block" title="Open KnowledgeAI Live App">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#09090b"/>
+                <circle cx="48" cy="46" r="24" fill="#f59e0b" fill-opacity="0.08"/>
+                <text x="20" y="45" fill="#fbbf24" font-family="Inter, sans-serif" font-weight="700" font-size="10">KnowledgeAI</text>
+                <text x="20" y="57" fill="#71717a" font-family="JetBrains Mono, monospace" font-size="6">ChromaDB · Llama3</text>
+                <rect x="92" y="18" width="42" height="56" rx="3" fill="#121215" stroke="#27272a" stroke-width="1"/>
+                <rect x="97" y="25" width="32" height="6" rx="1" fill="#27272a"/>
+                <rect x="97" y="35" width="26" height="6" rx="1" fill="#3f3f46"/>
+                <rect x="97" y="45" width="32" height="10" rx="1" fill="#451a03"/>
+                <rect x="97" y="59" width="20" height="6" rx="1" fill="#27272a"/>
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://rag-chatbot-ten-delta.vercel.app" target="_blank" rel="noopener noreferrer" class="link-underline">KnowledgeAI</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">local rag engine · production</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                End-to-end private RAG pipeline built in strict TypeScript with Next.js 14, ChromaDB vector search, and local Ollama (Llama 3) inference with similarity-score citations.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://rag-chatbot-ten-delta.vercel.app" target="_blank" rel="noopener noreferrer" class="sub-link">website</a>
+                <span>·</span>
+                <a href="https://github.com/ankittiwari-04/rag-chatbot" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 6: CardPulse -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <a href="https://github.com/ankittiwari-04/cardpulse" target="_blank" rel="noopener noreferrer" class="project-thumb block" title="View CardPulse on GitHub">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#080d0d"/>
+                <polyline points="16,66 38,54 58,59 82,36 104,42 130,22" fill="none" stroke="#2dd4bf" stroke-width="1.6"/>
+                <circle cx="82" cy="36" r="2.8" fill="#5eead4"/>
+                <circle cx="130" cy="22" r="2.8" fill="#5eead4"/>
+                <text x="16" y="26" fill="#ccfbf1" font-family="Inter, sans-serif" font-weight="600" font-size="9">CardPulse</text>
+                <text x="16" y="78" fill="#52525b" font-family="JetBrains Mono, monospace" font-size="6">173 tests · RapidFuzz ETL</text>
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://github.com/ankittiwari-04/cardpulse" target="_blank" rel="noopener noreferrer" class="link-underline">CardPulse</a>
+              </h3>
+              <div class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5 mt-1">
+                Collectible pricing and entity-resolution engine with RapidFuzz matching, confidence-scored buyback pricing, anomaly detection, and 173 automated unit and integration tests.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://github.com/ankittiwari-04/cardpulse" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 7: FinCore -->
+          <article class="project-row flex flex-col sm:flex-row items-start gap-5">
+            <a href="https://fincore-omega.vercel.app" target="_blank" rel="noopener noreferrer" class="project-thumb block" title="Open FinCore Live App">
+              <svg class="w-full h-full" viewBox="0 0 148 92" fill="none">
+                <rect width="148" height="92" fill="#090c10"/>
+                <rect x="16" y="16" width="116" height="60" rx="3" fill="#0d131a" stroke="#1e293b" stroke-width="1"/>
+                <text x="24" y="32" fill="#38bdf8" font-family="Inter, sans-serif" font-weight="700" font-size="9.5">FinCore</text>
+                <text x="24" y="43" fill="#64748b" font-family="JetBrains Mono, monospace" font-size="5.8">Next.js 14 · Prisma · PG</text>
+                <rect x="24" y="52" width="24" height="14" rx="1.5" fill="#0284c7" fill-opacity="0.25" stroke="#0284c7" stroke-opacity="0.5"/>
+                <rect x="54" y="52" width="24" height="14" rx="1.5" fill="#0f172a" stroke="#334155"/>
+                <rect x="84" y="52" width="38" height="14" rx="1.5" fill="#0f172a" stroke="#334155"/>
+              </svg>
+            </a>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-[16px] font-semibold leading-snug mb-0.5">
+                <a href="https://fincore-omega.vercel.app" target="_blank" rel="noopener noreferrer" class="link-underline">FinCore</a>
+              </h3>
+              <div class="text-[12.5px] text-[#787878] mb-2">full-stack platform · production</div>
+              <p class="text-[14.5px] text-[#b0b0b0] leading-relaxed mb-2.5">
+                Full-stack financial management application engineered with Next.js 14 App Router, strict TypeScript, Prisma ORM, and PostgreSQL with automated CI/CD deployments.
+              </p>
+              <div class="text-[13px] text-[#9a9a9a] flex flex-wrap items-center gap-1.5">
+                <a href="https://fincore-omega.vercel.app" target="_blank" rel="noopener noreferrer" class="sub-link">website</a>
+                <span>·</span>
+                <a href="https://github.com/ankittiwari-04/fincore" target="_blank" rel="noopener noreferrer" class="sub-link">code</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="mt-9 text-[15px] text-[#a3a3a3]">
+          To view all my projects, visit my <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="link-underline font-medium">GitHub →</a>
+        </p>
+      </section>
+
+      <!-- WRITING SECTION -->
+      <section id="writing" class="mb-16">
+        <h2 class="text-[20px] font-bold text-[#f5f5f5] tracking-tight mb-6">writing</h2>
+
+        <div class="space-y-7">
+          <div>
+            <h3 class="text-[16px] font-semibold leading-snug mb-1.5">
+              <button type="button" data-article-modal="token22" class="link-underline text-left cursor-pointer bg-transparent border-0 p-0 font-semibold">
+                Token-2022 Confidential Transfers vs. Permanent Delegate Seizure Authority
+              </button>
+            </h3>
+            <p class="text-[14.5px] text-[#a3a3a3] leading-relaxed">
+              Analyzing the compliance gap when sanctioned wallets move balances into confidential ElGamal state before a permanent delegate acts.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-[16px] font-semibold leading-snug mb-1.5">
+              <button type="button" data-article-modal="dutch-auction" class="link-underline text-left cursor-pointer bg-transparent border-0 p-0 font-semibold">
+                Designing Permissionless Dutch-Auction Rebalancing on Solana
+              </button>
+            </h3>
+            <p class="text-[14.5px] text-[#a3a3a3] leading-relaxed">
+              How a multi-asset vault resolves weight drift using Pyth PriceUpdateV2 feeds, deterministic pro-rata math, and atomic CPIs without centralized keepers.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-[16px] font-semibold leading-snug mb-1.5">
+              <button type="button" data-article-modal="yieldguard" class="link-underline text-left cursor-pointer bg-transparent border-0 p-0 font-semibold">
+                Enforcing Institutional RWA Compliance with Token-2022 Transfer Hooks
+              </button>
+            </h3>
+            <p class="text-[14.5px] text-[#a3a3a3] leading-relaxed">
+              Restricting liquidation transfers exclusively to KYC-verified institutional backstop pools directly at the SPL instruction level.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section id="contact" class="mb-16">
+        <h2 class="text-[20px] font-bold text-[#f5f5f5] tracking-tight mb-4">contact</h2>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-[1.75] mb-4">
+          I'm open to collaborations, security research, consulting, and freelance work, particularly around Solana programs and developer tools.
+        </p>
+        <p class="text-[15.5px] text-[#b5b5b5] leading-[1.75]">
+          The best way to reach me is <a href="mailto:ankittiwari.contact@gmail.com" class="link-underline">ankittiwari.contact@gmail.com</a>. You can also find me on <a href="https://github.com/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="link-underline">GitHub</a>, <a href="https://x.com/tiwariankit04" target="_blank" rel="noopener noreferrer" class="link-underline">X</a>, and <a href="https://linkedin.com/in/ankittiwari-04" target="_blank" rel="noopener noreferrer" class="link-underline">LinkedIn</a>.
+        </p>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="pt-7 border-t border-white/10 flex items-center justify-between text-[13px] text-[#787878]">
+        <div>© 2026 Ankit Tiwari</div>
+        <button id="backToTopBtn" type="button" class="sub-link text-[#8e8e8e] hover:text-white bg-transparent border-0 p-0 cursor-pointer">
+          back to top ↑
+        </button>
+      </footer>
+
+    </main>
+
+    <!-- Right Diagonal Hatch Border -->
+    <div class="hidden sm:block hatch-strip shrink-0"></div>
+  </div>
+
+  <!-- MODAL 1: Upload Photo -> Live Right-Side ASCII Portrait Converter -->
+  <div id="photoModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="bg-[#0e0e0e] border border-white/15 rounded-lg max-w-md w-full p-6 text-[#d4d4d4] shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-base font-semibold text-white">Custom ASCII Portrait Generator</h3>
+        <button id="closePhotoModalBtn" type="button" class="text-[#888] hover:text-white text-sm px-2 py-0.5">✕</button>
+      </div>
+      <p class="text-xs text-[#9a9a9a] leading-relaxed mb-4">
+        Upload any portrait photo to convert it into the animated ASCII silhouette on the right side of your portfolio using the exact <code class="text-white/80">.,:;irsXA253hMHGS#9B&amp;@</code> character ramp.
+      </p>
+      <label class="block w-full border border-dashed border-white/20 hover:border-white/40 rounded p-4 text-center cursor-pointer mb-4 transition-colors bg-black/40">
+        <span class="text-xs text-white font-medium block mb-1">Select a photo from your device</span>
+        <span class="text-[11px] text-[#777]">PNG, JPG, or WEBP — processed locally in your browser</span>
+        <input id="photoFileInput" type="file" accept="image/*" class="hidden" />
+      </label>
+      <div class="space-y-3 mb-5">
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>Contrast</span>
+            <span id="contrastVal">1.25</span>
+          </div>
+          <input id="contrastSlider" type="range" min="0.6" max="2.2" step="0.05" value="1.25" class="w-full accent-white" />
+        </div>
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>Brightness</span>
+            <span id="brightnessVal">1.00</span>
+          </div>
+          <input id="brightnessSlider" type="range" min="0.5" max="1.8" step="0.05" value="1.00" class="w-full accent-white" />
+        </div>
+      </div>
+      <div class="flex items-center justify-between gap-2">
+        <button id="resetPortraitBtn" type="button" class="text-xs text-[#999] hover:text-white underline underline-offset-4">
+          Reset to default silhouette
+        </button>
+        <button id="donePhotoModalBtn" type="button" class="text-xs bg-white text-black font-medium px-4 py-1.5 rounded hover:bg-neutral-200 transition-colors">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Technical Reader Modal for Projects & Writing -->
+  <div id="readerModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+    <div class="bg-[#0b0b0b] border border-white/15 rounded-lg max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+        <div>
+          <div id="readerTag" class="text-[11px] font-mono text-[#787878] uppercase tracking-wider"></div>
+          <h3 id="readerTitle" class="text-lg font-bold text-white mt-0.5"></h3>
+        </div>
+        <button id="closeReaderModalBtn" type="button" class="text-[#888] hover:text-white text-sm px-2.5 py-1 rounded border border-white/10">Esc / Close</button>
+      </div>
+      <div id="readerBody" class="p-6 overflow-y-auto text-[14.5px] text-[#c4c4c4] leading-relaxed space-y-4"></div>
+    </div>
+  </div>
+
+  <script>
+    const RAMP = " .,:;irsXA253hMHGS#9B&@";
+    const CRAB_GRID = [[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.083,0.125,0.021,0.0,0.0,0.0,0.0,0.104,0.333,0.437,0.292,0.042,0.0,0.0,0.0,0.0,0.062,0.125,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.187,0.479,0.542,0.396,0.167,0.0,0.0,0.083,0.354,0.562,0.604,0.521,0.25,0.0,0.0,0.042,0.25,0.5,0.562,0.396,0.083,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.25,0.437,0.333,0.104,0.0,0.0,0.104,0.375,0.542,0.562,0.562,0.5,0.375,0.292,0.396,0.521,0.562,0.583,0.562,0.479,0.354,0.333,0.437,0.542,0.583,0.562,0.479,0.271,0.062,0.0,0.021,0.167,0.333,0.417,0.229,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.458,0.625,0.583,0.458,0.396,0.417,0.479,0.583,0.604,0.604,0.625,0.604,0.583,0.562,0.583,0.604,0.604,0.604,0.625,0.604,0.604,0.604,0.604,0.625,0.625,0.604,0.583,0.521,0.437,0.396,0.437,0.5,0.562,0.583,0.417,0.083,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.25,0.375,0.271,0.062,0.0,0.0,0.229,0.521,0.604,0.604,0.583,0.583,0.583,0.583,0.583,0.583,0.562,0.583,0.583,0.583,0.604,0.604,0.583,0.562,0.583,0.583,0.583,0.604,0.625,0.604,0.583,0.583,0.562,0.562,0.583,0.583,0.562,0.583,0.625,0.646,0.625,0.458,0.146,0.0,0.0,0.125,0.312,0.333,0.125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.437,0.583,0.5,0.437,0.417,0.417,0.458,0.542,0.562,0.562,0.562,0.583,0.604,0.583,0.562,0.542,0.542,0.542,0.542,0.542,0.562,0.562,0.542,0.542,0.542,0.542,0.542,0.562,0.562,0.562,0.562,0.542,0.542,0.542,0.562,0.583,0.604,0.604,0.583,0.583,0.604,0.562,0.437,0.417,0.437,0.458,0.521,0.5,0.312,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.104,0.417,0.604,0.625,0.604,0.604,0.604,0.583,0.583,0.583,0.583,0.583,0.604,0.625,0.604,0.604,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.583,0.604,0.646,0.687,0.687,0.646,0.646,0.667,0.646,0.625,0.646,0.667,0.646,0.646,0.604,0.396,0.083,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.187,0.271,0.229,0.125,0.042,0.146,0.396,0.562,0.583,0.562,0.583,0.583,0.562,0.562,0.542,0.542,0.521,0.542,0.542,0.562,0.583,0.604,0.583,0.583,0.583,0.583,0.604,0.604,0.583,0.583,0.604,0.604,0.583,0.583,0.583,0.583,0.604,0.604,0.583,0.583,0.604,0.604,0.646,0.646,0.646,0.646,0.646,0.625,0.604,0.625,0.646,0.646,0.646,0.625,0.479,0.187,0.083,0.187,0.271,0.25,0.146,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.104,0.437,0.583,0.562,0.5,0.437,0.479,0.604,0.667,0.667,0.687,0.708,0.729,0.687,0.667,0.667,0.667,0.646,0.667,0.667,0.687,0.708,0.729,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.729,0.729,0.729,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.708,0.729,0.729,0.708,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.729,0.729,0.625,0.479,0.458,0.542,0.604,0.604,0.396,0.083,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.083,0.437,0.625,0.646,0.646,0.646,0.667,0.687,0.708,0.687,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.687,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.667,0.646,0.667,0.667,0.625,0.417,0.104,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.083,0.375,0.562,0.625,0.625,0.646,0.625,0.625,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.625,0.625,0.646,0.646,0.562,0.333,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.104,0.25,0.271,0.271,0.292,0.375,0.542,0.646,0.667,0.687,0.708,0.687,0.687,0.708,0.687,0.687,0.708,0.708,0.687,0.687,0.708,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.708,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.687,0.667,0.521,0.354,0.292,0.271,0.271,0.208,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.229,0.5,0.604,0.625,0.625,0.625,0.646,0.625,0.625,0.646,0.646,0.646,0.646,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.625,0.646,0.646,0.646,0.646,0.646,0.625,0.625,0.625,0.583,0.437,0.125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.104,0.396,0.604,0.687,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.708,0.687,0.708,0.687,0.687,0.708,0.708,0.687,0.708,0.708,0.708,0.687,0.708,0.687,0.708,0.708,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.708,0.708,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.708,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.687,0.708,0.708,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.708,0.729,0.708,0.604,0.354,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.021,0.292,0.562,0.708,0.729,0.708,0.708,0.708,0.708,0.729,0.729,0.729,0.708,0.729,0.708,0.708,0.729,0.729,0.708,0.729,0.729,0.729,0.708,0.729,0.708,0.729,0.729,0.729,0.708,0.708,0.708,0.729,0.729,0.75,0.729,0.729,0.729,0.729,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.729,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.729,0.75,0.75,0.75,0.75,0.771,0.771,0.771,0.708,0.542,0.229,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.167,0.146,0.125,0.229,0.396,0.562,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.667,0.667,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.646,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.687,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.667,0.687,0.687,0.687,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.687,0.708,0.708,0.708,0.708,0.708,0.687,0.687,0.646,0.521,0.354,0.187,0.146,0.146,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.687,0.667,0.646,0.667,0.687,0.687,0.687,0.687,0.687,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.687,0.708,0.708,0.708,0.729,0.75,0.75,0.708,0.667,0.646,0.667,0.687,0.708,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.75,0.75,0.771,0.75,0.729,0.646,0.625,0.687,0.729,0.729,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.75,0.75,0.729,0.729,0.729,0.708,0.687,0.687,0.667,0.646,0.396,0.062,0.0,0.0,0.0,0.0,0.0,0.0],[0.542,0.562,0.646,0.687,0.708,0.687,0.687,0.687,0.687,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.687,0.708,0.75,0.729,0.646,0.542,0.437,0.458,0.542,0.604,0.667,0.708,0.729,0.708,0.708,0.708,0.687,0.687,0.729,0.792,0.771,0.646,0.458,0.417,0.542,0.646,0.687,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.708,0.708,0.708,0.708,0.646,0.521,0.292,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.062,0.292,0.583,0.708,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.729,0.729,0.75,0.729,0.729,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.729,0.729,0.708,0.729,0.833,0.937,0.958,0.854,0.562,0.208,0.042,0.104,0.375,0.625,0.708,0.75,0.729,0.729,0.708,0.667,0.667,0.792,0.937,0.958,0.771,0.396,0.125,0.208,0.5,0.687,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.75,0.75,0.729,0.729,0.729,0.729,0.729,0.708,0.521,0.208,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.104,0.312,0.604,0.75,0.771,0.771,0.771,0.792,0.792,0.771,0.771,0.771,0.771,0.792,0.771,0.771,0.771,0.771,0.771,0.792,0.792,0.771,0.771,0.792,0.771,0.771,0.75,0.687,0.625,0.729,0.937,1.0,0.812,0.479,0.167,0.062,0.042,0.229,0.583,0.771,0.792,0.771,0.771,0.708,0.583,0.458,0.604,0.896,0.937,0.729,0.396,0.146,0.146,0.396,0.667,0.771,0.771,0.771,0.792,0.792,0.771,0.771,0.792,0.792,0.771,0.771,0.792,0.771,0.792,0.792,0.771,0.771,0.771,0.771,0.771,0.729,0.542,0.25,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.542,0.604,0.687,0.708,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.708,0.625,0.479,0.375,0.479,0.521,0.312,0.104,0.042,0.062,0.083,0.229,0.521,0.687,0.729,0.729,0.708,0.667,0.521,0.271,0.229,0.437,0.479,0.271,0.125,0.083,0.104,0.312,0.583,0.708,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.729,0.687,0.583,0.458,0.271,0.062,0.0,0.0,0.0,0.0,0.0],[0.729,0.708,0.708,0.708,0.729,0.708,0.708,0.729,0.729,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.708,0.708,0.729,0.708,0.604,0.354,0.167,0.083,0.0,0.0,0.0,0.021,0.167,0.437,0.646,0.708,0.729,0.708,0.708,0.729,0.667,0.417,0.146,0.083,0.083,0.042,0.042,0.083,0.187,0.396,0.604,0.687,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.729,0.708,0.708,0.729,0.708,0.729,0.729,0.708,0.708,0.729,0.729,0.729,0.729,0.729,0.729,0.708,0.646,0.542,0.375,0.146,0.0,0.0,0.0],[0.729,0.729,0.708,0.708,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.729,0.729,0.75,0.729,0.729,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.729,0.729,0.729,0.708,0.583,0.479,0.375,0.229,0.146,0.167,0.292,0.458,0.625,0.708,0.75,0.75,0.729,0.729,0.75,0.729,0.625,0.479,0.354,0.354,0.354,0.375,0.437,0.562,0.667,0.708,0.729,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.75,0.729,0.729,0.75,0.729,0.75,0.75,0.729,0.729,0.729,0.75,0.75,0.75,0.729,0.729,0.75,0.729,0.729,0.687,0.583,0.375,0.125,0.0],[0.687,0.625,0.5,0.458,0.5,0.583,0.646,0.646,0.646,0.667,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.687,0.687,0.687,0.667,0.667,0.646,0.646,0.646,0.667,0.667,0.687,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.687,0.646,0.646,0.667,0.687,0.646,0.667,0.687,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.708,0.729,0.708,0.708,0.708,0.708,0.729,0.729,0.687,0.646,0.583,0.562,0.583,0.604,0.583,0.604,0.646,0.687,0.729,0.75,0.708,0.583,0.333,0.062],[0.729,0.604,0.354,0.229,0.354,0.521,0.604,0.583,0.5,0.5,0.604,0.687,0.75,0.771,0.75,0.75,0.75,0.75,0.729,0.75,0.771,0.75,0.75,0.75,0.75,0.708,0.646,0.625,0.604,0.625,0.646,0.625,0.646,0.708,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.729,0.687,0.625,0.604,0.625,0.646,0.625,0.604,0.646,0.708,0.729,0.75,0.729,0.75,0.771,0.771,0.729,0.75,0.771,0.792,0.771,0.771,0.771,0.75,0.729,0.667,0.542,0.354,0.271,0.417,0.542,0.479,0.354,0.354,0.562,0.729,0.771,0.771,0.667,0.458,0.187,0.0],[0.729,0.646,0.437,0.187,0.146,0.292,0.437,0.5,0.375,0.187,0.146,0.312,0.562,0.687,0.708,0.708,0.729,0.687,0.646,0.646,0.687,0.729,0.687,0.625,0.604,0.625,0.646,0.667,0.667,0.687,0.687,0.646,0.562,0.562,0.604,0.646,0.687,0.687,0.687,0.708,0.708,0.687,0.687,0.646,0.583,0.583,0.604,0.625,0.646,0.646,0.646,0.646,0.646,0.687,0.667,0.625,0.646,0.687,0.729,0.687,0.604,0.562,0.604,0.646,0.687,0.729,0.708,0.667,0.562,0.354,0.146,0.083,0.187,0.396,0.437,0.229,0.104,0.271,0.562,0.708,0.687,0.583,0.354,0.125,0.0,0.0],[0.771,0.771,0.667,0.396,0.146,0.083,0.229,0.417,0.437,0.208,0.021,0.062,0.354,0.604,0.708,0.771,0.792,0.75,0.646,0.583,0.604,0.687,0.708,0.687,0.708,0.729,0.771,0.771,0.771,0.792,0.792,0.75,0.729,0.729,0.729,0.708,0.687,0.708,0.75,0.792,0.792,0.708,0.687,0.667,0.667,0.708,0.75,0.771,0.771,0.792,0.771,0.792,0.792,0.792,0.75,0.729,0.687,0.667,0.667,0.583,0.583,0.646,0.687,0.75,0.75,0.75,0.729,0.562,0.292,0.083,0.0,0.104,0.333,0.417,0.25,0.062,0.146,0.479,0.729,0.771,0.667,0.417,0.083,0.0,0.0,0.0],[0.646,0.687,0.708,0.646,0.437,0.146,0.021,0.125,0.312,0.375,0.229,0.021,0.042,0.208,0.417,0.646,0.75,0.729,0.667,0.583,0.562,0.646,0.708,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.729,0.687,0.646,0.583,0.542,0.521,0.521,0.521,0.583,0.583,0.583,0.625,0.667,0.687,0.687,0.729,0.75,0.75,0.771,0.792,0.792,0.771,0.75,0.708,0.646,0.604,0.646,0.729,0.75,0.708,0.646,0.5,0.312,0.146,0.0,0.0,0.062,0.271,0.312,0.167,0.0,0.042,0.312,0.604,0.708,0.604,0.354,0.104,0.0,0.0,0.0,0.0],[0.208,0.333,0.521,0.625,0.604,0.375,0.083,0.0,0.042,0.208,0.271,0.125,0.0,0.0,0.062,0.229,0.396,0.542,0.604,0.625,0.625,0.667,0.708,0.729,0.708,0.708,0.687,0.625,0.562,0.521,0.479,0.479,0.479,0.437,0.354,0.312,0.25,0.167,0.146,0.104,0.104,0.125,0.167,0.167,0.146,0.167,0.187,0.208,0.208,0.229,0.312,0.479,0.646,0.729,0.75,0.729,0.729,0.708,0.687,0.646,0.625,0.625,0.5,0.333,0.187,0.083,0.0,0.0,0.0,0.021,0.208,0.271,0.104,0.0,0.0,0.25,0.5,0.583,0.479,0.25,0.042,0.0,0.0,0.0,0.0,0.0],[0.0,0.042,0.229,0.417,0.583,0.583,0.417,0.187,0.0,0.021,0.167,0.208,0.042,0.0,0.0,0.0,0.062,0.208,0.375,0.542,0.667,0.708,0.771,0.792,0.812,0.792,0.771,0.646,0.479,0.312,0.187,0.167,0.187,0.146,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.5,0.708,0.792,0.812,0.812,0.812,0.792,0.708,0.562,0.396,0.292,0.167,0.021,0.0,0.0,0.0,0.0,0.0,0.104,0.208,0.104,0.0,0.0,0.187,0.521,0.646,0.5,0.208,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.062,0.229,0.417,0.521,0.458,0.208,0.0,0.0,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.25,0.333,0.5,0.667,0.729,0.729,0.729,0.667,0.562,0.417,0.25,0.146,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.104,0.229,0.417,0.625,0.687,0.708,0.729,0.729,0.646,0.5,0.333,0.167,0.021,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.042,0.021,0.0,0.0,0.104,0.375,0.479,0.354,0.125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.125,0.292,0.458,0.437,0.187,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.021,0.229,0.479,0.667,0.75,0.812,0.792,0.771,0.729,0.667,0.625,0.5,0.333,0.208,0.187,0.125,0.0,0.0,0.0,0.0,0.0,0.083,0.104,0.146,0.187,0.271,0.417,0.542,0.646,0.708,0.75,0.75,0.75,0.708,0.604,0.417,0.187,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.292,0.479,0.312,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.292,0.312,0.146,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.125,0.292,0.479,0.646,0.708,0.708,0.708,0.708,0.729,0.729,0.667,0.583,0.521,0.333,0.062,0.0,0.0,0.0,0.083,0.312,0.437,0.562,0.625,0.646,0.708,0.708,0.687,0.646,0.667,0.625,0.5,0.375,0.229,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.125,0.354,0.312,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.021,0.146,0.125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.104,0.271,0.354,0.437,0.521,0.583,0.604,0.604,0.542,0.437,0.312,0.146,0.0,0.0,0.0,0.0,0.0,0.146,0.271,0.354,0.375,0.375,0.375,0.354,0.333,0.292,0.312,0.271,0.083,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.104,0.187,0.062,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.146,0.312,0.417,0.479,0.458,0.354,0.125,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.021,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]];
+    const DEFAULT_PORTRAIT_GRID = [[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.05,0.035,0.019,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.092,0.092,0.05,0.035,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.145,0.207,0.289,0.369,0.335,0.266,0.289,0.231,0.157,0.145,0.145,0.145,0.157,0.145,0.194,0.182,0.194,0.207,0.17,0.207,0.313,0.254,0.219,0.207,0.182,0.145,0.145,0.065,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.119,0.231,0.254,0.403,0.533,0.391,0.347,0.278,0.243,0.335,0.457,0.446,0.457,0.391,0.324,0.207,0.157,0.231,0.425,0.479,0.414,0.369,0.522,0.457,0.266,0.243,0.278,0.254,0.254,0.266,0.231,0.132,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.05,0.194,0.522,0.479,0.358,0.511,0.457,0.414,0.289,0.194,0.157,0.194,0.358,0.369,0.182,0.092,0.145,0.157,0.182,0.119,0.145,0.219,0.194,0.207,0.219,0.243,0.301,0.38,0.347,0.17,0.157,0.194,0.219,0.278,0.219,0.157,0.079,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.157,0.194,0.17,0.182,0.289,0.403,0.49,0.358,0.324,0.324,0.347,0.347,0.266,0.243,0.219,0.119,0.119,0.145,0.231,0.219,0.157,0.132,0.119,0.106,0.079,0.035,0.019,0.019,0.035,0.05,0.092,0.145,0.157,0.079,0.119,0.194,0.335,0.324,0.243,0.254,0.289,0.17,0.092,0.065,0.092,0.079,0.05,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.119,0.145,0.347,0.301,0.207,0.231,0.145,0.079,0.092,0.182,0.207,0.182,0.157,0.313,0.313,0.266,0.391,0.289,0.145,0.145,0.132,0.194,0.119,0.092,0.119,0.145,0.194,0.079,0.05,0.05,0.019,0.019,0.035,0.035,0.035,0.035,0.065,0.132,0.289,0.324,0.313,0.369,0.335,0.313,0.219,0.231,0.38,0.301,0.194,0.145,0.092,0.065,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.092,0.324,0.414,0.266,0.289,0.358,0.278,0.106,0.05,0.05,0.019,0.132,0.207,0.157,0.065,0.092,0.182,0.231,0.254,0.403,0.254,0.157,0.05,0.065,0.079,0.079,0.132,0.278,0.301,0.219,0.092,0.05,0.065,0.106,0.065,0.035,0.035,0.065,0.035,0.035,0.035,0.019,0.019,0.035,0.05,0.092,0.132,0.207,0.289,0.347,0.358,0.369,0.38,0.301,0.207,0.132,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.369,0.391,0.289,0.511,0.565,0.554,0.554,0.254,0.119,0.194,0.182,0.119,0.119,0.157,0.079,0.065,0.092,0.035,0.092,0.243,0.145,0.106,0.035,0.0,0.05,0.079,0.079,0.092,0.065,0.106,0.106,0.05,0.065,0.079,0.019,0.035,0.05,0.065,0.035,0.019,0.019,0.019,0.019,0.019,0.065,0.132,0.132,0.065,0.065,0.132,0.106,0.194,0.243,0.324,0.391,0.335,0.207,0.065,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.207,0.194,0.065,0.092,0.313,0.468,0.457,0.425,0.358,0.182,0.194,0.231,0.17,0.313,0.182,0.05,0.0,0.0,0.0,0.065,0.05,0.05,0.035,0.019,0.035,0.05,0.05,0.05,0.035,0.035,0.079,0.035,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.019,0.035,0.035,0.019,0.019,0.019,0.035,0.035,0.065,0.106,0.17,0.119,0.132,0.065,0.05,0.132,0.145,0.207,0.324,0.231,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.182,0.38,0.301,0.289,0.347,0.278,0.254,0.243,0.092,0.079,0.065,0.05,0.035,0.05,0.05,0.019,0.035,0.106,0.194,0.313,0.358,0.347,0.347,0.403,0.369,0.324,0.254,0.278,0.254,0.194,0.157,0.145,0.065,0.079,0.019,0.019,0.019,0.0,0.035,0.05,0.035,0.035,0.035,0.035,0.0,0.019,0.035,0.035,0.05,0.106,0.132,0.145,0.207,0.145,0.092,0.231,0.092,0.079,0.38,0.313,0.219,0.207,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.207,0.313,0.358,0.38,0.425,0.358,0.403,0.436,0.132,0.019,0.035,0.05,0.019,0.0,0.019,0.119,0.324,0.628,0.7,0.751,0.669,0.617,0.617,0.575,0.565,0.554,0.533,0.479,0.38,0.313,0.254,0.119,0.092,0.035,0.035,0.019,0.035,0.05,0.035,0.019,0.019,0.019,0.05,0.035,0.035,0.035,0.019,0.019,0.019,0.019,0.0,0.0,0.019,0.019,0.019,0.05,0.106,0.145,0.092,0.194,0.145,0.219,0.194,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.119,0.324,0.335,0.266,0.254,0.369,0.313,0.278,0.369,0.266,0.092,0.0,0.0,0.0,0.145,0.543,0.679,0.98,1.0,0.832,0.761,0.628,0.596,0.638,0.607,0.511,0.446,0.414,0.358,0.347,0.313,0.219,0.145,0.05,0.0,0.0,0.0,0.019,0.0,0.019,0.0,0.019,0.0,0.0,0.019,0.019,0.019,0.0,0.019,0.019,0.019,0.0,0.0,0.019,0.019,0.019,0.035,0.05,0.05,0.035,0.065,0.207,0.335,0.17,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.231,0.414,0.522,0.369,0.391,0.391,0.358,0.324,0.425,0.182,0.092,0.0,0.231,0.751,0.971,0.911,1.0,0.921,0.761,0.659,0.669,0.596,0.468,0.446,0.38,0.301,0.289,0.313,0.313,0.347,0.403,0.347,0.278,0.182,0.092,0.05,0.019,0.019,0.019,0.019,0.019,0.035,0.035,0.035,0.035,0.019,0.019,0.05,0.05,0.035,0.019,0.019,0.019,0.0,0.019,0.035,0.05,0.065,0.106,0.132,0.157,0.289,0.313,0.207,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.219,0.403,0.436,0.38,0.266,0.231,0.243,0.157,0.065,0.065,0.106,0.71,1.0,1.0,1.0,1.0,0.941,0.741,0.638,0.457,0.313,0.324,0.335,0.289,0.266,0.289,0.347,0.347,0.358,0.369,0.38,0.436,0.436,0.403,0.313,0.132,0.05,0.065,0.05,0.035,0.019,0.0,0.0,0.019,0.0,0.0,0.019,0.019,0.0,0.0,0.0,0.019,0.0,0.0,0.0,0.035,0.065,0.092,0.092,0.207,0.436,0.347,0.266,0.106,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.301,0.501,0.522,0.358,0.266,0.182,0.182,0.106,0.05,0.659,1.0,1.0,1.0,0.822,0.596,0.278,0.106,0.092,0.145,0.254,0.301,0.254,0.278,0.313,0.358,0.403,0.425,0.468,0.446,0.425,0.436,0.403,0.414,0.436,0.335,0.132,0.05,0.065,0.065,0.035,0.035,0.019,0.0,0.065,0.182,0.278,0.289,0.289,0.194,0.079,0.0,0.019,0.019,0.019,0.019,0.035,0.065,0.092,0.254,0.324,0.219,0.231,0.182,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.182,0.425,0.511,0.49,0.324,0.194,0.106,0.358,1.0,1.0,0.99,0.971,0.596,0.231,0.119,0.119,0.106,0.145,0.324,0.266,0.254,0.289,0.194,0.219,0.289,0.391,0.479,0.468,0.425,0.391,0.369,0.414,0.446,0.391,0.182,0.065,0.05,0.035,0.065,0.145,0.17,0.266,0.391,0.289,0.391,0.522,0.511,0.468,0.457,0.243,0.019,0.019,0.0,0.0,0.019,0.065,0.079,0.079,0.254,0.391,0.313,0.194,0.106,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.132,0.278,0.266,0.278,0.358,0.278,0.17,0.092,0.425,0.425,0.194,0.278,0.679,0.941,0.49,0.243,0.231,0.565,0.802,0.872,0.617,0.501,0.511,0.565,0.72,0.741,0.669,0.565,0.457,0.403,0.391,0.425,0.446,0.457,0.446,0.324,0.207,0.065,0.194,0.358,0.436,0.446,0.479,0.414,0.207,0.358,0.522,0.565,0.501,0.522,0.479,0.079,0.019,0.019,0.0,0.0,0.035,0.079,0.092,0.182,0.278,0.219,0.079,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.17,0.289,0.266,0.231,0.231,0.231,0.231,0.358,0.358,0.313,0.586,0.617,0.533,0.369,0.369,0.436,0.71,1.0,1.0,0.902,1.0,1.0,1.0,1.0,0.802,0.586,0.468,0.457,0.446,0.446,0.446,0.425,0.436,0.414,0.335,0.266,0.219,0.369,0.479,0.468,0.49,0.358,0.266,0.145,0.194,0.254,0.468,0.479,0.49,0.254,0.019,0.019,0.035,0.019,0.019,0.035,0.079,0.157,0.119,0.207,0.231,0.079,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.119,0.231,0.335,0.391,0.335,0.243,0.501,0.781,0.731,0.436,0.391,0.403,0.391,0.403,0.596,0.971,1.0,1.0,1.0,1.0,0.931,0.71,0.533,0.414,0.425,0.414,0.403,0.403,0.414,0.403,0.403,0.358,0.266,0.243,0.266,0.425,0.479,0.457,0.446,0.289,0.278,0.358,0.358,0.347,0.425,0.49,0.289,0.035,0.019,0.05,0.019,0.0,0.035,0.035,0.065,0.132,0.065,0.254,0.358,0.219,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.119,0.132,0.648,1.0,0.607,0.403,0.324,0.38,0.436,0.457,0.313,0.313,0.617,0.941,1.0,0.971,0.852,0.7,0.533,0.446,0.414,0.425,0.414,0.391,0.369,0.324,0.347,0.391,0.324,0.231,0.17,0.243,0.403,0.446,0.403,0.335,0.358,0.479,0.468,0.501,0.446,0.369,0.157,0.0,0.035,0.035,0.019,0.035,0.035,0.035,0.035,0.079,0.194,0.254,0.243,0.278,0.324,0.243,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.243,0.565,0.446,0.358,0.301,0.219,0.194,0.243,0.289,0.347,0.414,0.468,0.628,0.771,0.659,0.554,0.479,0.425,0.403,0.425,0.403,0.391,0.403,0.358,0.358,0.335,0.254,0.194,0.207,0.219,0.358,0.414,0.289,0.266,0.391,0.436,0.468,0.324,0.182,0.05,0.019,0.019,0.019,0.019,0.065,0.079,0.065,0.035,0.065,0.079,0.17,0.313,0.194,0.278,0.313,0.278,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.231,0.71,0.862,0.628,0.479,0.391,0.358,0.358,0.301,0.347,0.446,0.425,0.446,0.436,0.436,0.391,0.38,0.391,0.369,0.38,0.369,0.414,0.369,0.289,0.182,0.182,0.219,0.243,0.324,0.358,0.266,0.207,0.182,0.219,0.278,0.219,0.092,0.035,0.019,0.019,0.05,0.035,0.035,0.035,0.035,0.065,0.065,0.035,0.119,0.254,0.157,0.194,0.194,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.289,0.792,0.565,0.511,0.468,0.403,0.369,0.324,0.324,0.425,0.586,0.425,0.391,0.414,0.436,0.414,0.38,0.403,0.38,0.369,0.313,0.313,0.289,0.278,0.266,0.219,0.243,0.335,0.38,0.324,0.289,0.324,0.369,0.369,0.358,0.313,0.207,0.065,0.0,0.035,0.05,0.05,0.05,0.05,0.019,0.035,0.035,0.035,0.065,0.207,0.301,0.219,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.145,0.659,1.0,0.951,0.71,0.543,0.468,0.457,0.479,0.543,0.554,0.468,0.403,0.414,0.425,0.425,0.403,0.403,0.347,0.369,0.335,0.301,0.254,0.231,0.219,0.278,0.335,0.403,0.391,0.254,0.243,0.313,0.347,0.358,0.369,0.335,0.243,0.106,0.019,0.019,0.035,0.079,0.079,0.05,0.019,0.019,0.019,0.019,0.035,0.182,0.266,0.414,0.335,0.119,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.522,0.832,0.468,0.511,0.71,0.7,0.72,0.648,0.575,0.554,0.554,0.479,0.446,0.457,0.457,0.414,0.38,0.38,0.38,0.324,0.266,0.231,0.231,0.243,0.266,0.313,0.289,0.219,0.254,0.335,0.358,0.335,0.289,0.266,0.243,0.182,0.106,0.035,0.0,0.0,0.035,0.065,0.065,0.05,0.019,0.019,0.035,0.092,0.157,0.219,0.369,0.369,0.17,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.457,0.99,1.0,1.0,0.911,0.822,0.7,0.565,0.565,0.522,0.457,0.391,0.403,0.38,0.403,0.391,0.38,0.369,0.324,0.313,0.243,0.182,0.17,0.157,0.157,0.194,0.254,0.289,0.289,0.278,0.266,0.219,0.194,0.145,0.119,0.132,0.092,0.035,0.0,0.019,0.019,0.05,0.065,0.065,0.019,0.0,0.119,0.243,0.182,0.266,0.289,0.119,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.106,0.902,1.0,0.792,0.554,0.369,0.266,0.219,0.324,0.231,0.17,0.132,0.194,0.182,0.145,0.17,0.17,0.119,0.132,0.119,0.119,0.157,0.157,0.207,0.301,0.289,0.278,0.324,0.324,0.289,0.243,0.219,0.219,0.17,0.182,0.231,0.182,0.119,0.035,0.0,0.0,0.019,0.035,0.05,0.065,0.065,0.065,0.157,0.266,0.324,0.219,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.289,0.468,0.278,0.145,0.092,0.157,0.17,0.194,0.207,0.289,0.335,0.391,0.436,0.501,0.479,0.414,0.468,0.425,0.403,0.425,0.446,0.501,0.669,0.741,0.842,0.941,0.961,0.98,0.98,0.862,0.862,0.72,0.638,0.659,0.457,0.403,0.38,0.324,0.119,0.0,0.0,0.0,0.0,0.035,0.145,0.207,0.219,0.266,0.301,0.145,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.324,0.501,0.659,0.741,0.802,0.792,0.882,0.951,0.852,0.741,0.617,0.533,0.436,0.369,0.403,0.38,0.369,0.425,0.369,0.335,0.358,0.38,0.358,0.391,0.369,0.358,0.436,0.468,0.457,0.533,0.554,0.575,0.586,0.554,0.669,0.659,0.596,0.511,0.38,0.313,0.182,0.065,0.05,0.035,0.079,0.182,0.254,0.219,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.335,0.648,0.741,0.862,0.941,0.832,0.781,0.812,0.862,0.771,0.554,0.436,0.324,0.278,0.266,0.254,0.278,0.289,0.266,0.278,0.289,0.231,0.207,0.194,0.17,0.207,0.17,0.17,0.182,0.17,0.145,0.157,0.182,0.207,0.157,0.17,0.301,0.347,0.347,0.501,0.522,0.607,0.638,0.586,0.522,0.436,0.313,0.207,0.035,0.079,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.369,0.731,0.951,0.911,0.751,0.862,0.761,0.792,0.771,0.771,0.596,0.414,0.301,0.278,0.278,0.266,0.278,0.289,0.266,0.231,0.243,0.254,0.301,0.358,0.414,0.446,0.457,0.457,0.543,0.501,0.425,0.446,0.403,0.301,0.289,0.301,0.289,0.231,0.17,0.194,0.266,0.243,0.266,0.301,0.335,0.446,0.575,0.638,0.648,0.554,0.358,0.132,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.106,0.679,1.0,0.852,0.792,0.72,0.872,0.862,0.771,0.781,0.72,0.479,0.243,0.266,0.324,0.324,0.335,0.347,0.324,0.278,0.358,0.436,0.554,0.638,0.679,0.669,0.659,0.679,0.669,0.628,0.648,0.659,0.679,0.659,0.669,0.638,0.617,0.586,0.554,0.575,0.479,0.347,0.324,0.243,0.182,0.182,0.243,0.301,0.301,0.301,0.414,0.543,0.628,0.533,0.324,0.092,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.533,0.882,0.852,0.832,0.812,0.741,0.882,0.822,0.731,0.565,0.425,0.324,0.347,0.324,0.289,0.335,0.347,0.369,0.468,0.617,0.679,0.71,0.7,0.679,0.669,0.533,0.522,0.554,0.596,0.565,0.554,0.607,0.638,0.586,0.607,0.575,0.607,0.638,0.638,0.565,0.565,0.586,0.554,0.543,0.511,0.369,0.301,0.219,0.219,0.231,0.231,0.301,0.391,0.468,0.575,0.501,0.219,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.219,0.882,0.892,0.862,0.781,0.822,0.751,0.761,0.72,0.543,0.479,0.358,0.358,0.391,0.38,0.301,0.358,0.554,0.731,0.71,0.751,0.72,0.69,0.7,0.638,0.638,0.669,0.596,0.638,0.607,0.617,0.638,0.596,0.596,0.607,0.596,0.628,0.575,0.554,0.575,0.617,0.638,0.596,0.586,0.607,0.648,0.659,0.669,0.522,0.425,0.313,0.207,0.207,0.243,0.243,0.278,0.436,0.501,0.38,0.231,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.659,0.971,0.872,0.822,0.69,0.751,0.771,0.72,0.565,0.468,0.436,0.436,0.425,0.335,0.358,0.554,0.7,0.822,0.771,0.731,0.679,0.648,0.659,0.648,0.596,0.586,0.575,0.628,0.617,0.638,0.628,0.554,0.511,0.554,0.533,0.511,0.49,0.554,0.575,0.554,0.596,0.596,0.565,0.607,0.607,0.607,0.69,0.679,0.628,0.669,0.628,0.522,0.335,0.157,0.17,0.194,0.182,0.207,0.301,0.324,0.243,0.182,0.065,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.391,0.921,0.792,0.659,0.628,0.638,0.501,0.543,0.617,0.669,0.554,0.414,0.436,0.347,0.446,0.7,0.882,0.812,0.761,0.69,0.607,0.607,0.638,0.628,0.522,0.596,0.586,0.554,0.554,0.49,0.479,0.358,0.219,0.219,0.207,0.231,0.231,0.194,0.17,0.194,0.243,0.219,0.266,0.38,0.391,0.479,0.543,0.596,0.607,0.586,0.575,0.648,0.71,0.638,0.49,0.266,0.145,0.132,0.157,0.17,0.17,0.254,0.254,0.194,0.145,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.219,0.741,0.669,0.501,0.638,0.575,0.479,0.391,0.638,0.659,0.607,0.628,0.596,0.575,0.659,0.761,0.761,0.771,0.741,0.71,0.628,0.586,0.607,0.586,0.533,0.565,0.565,0.543,0.479,0.301,0.219,0.182,0.132,0.194,0.219,0.194,0.243,0.278,0.243,0.17,0.17,0.132,0.182,0.243,0.17,0.231,0.207,0.254,0.301,0.425,0.49,0.565,0.648,0.638,0.679,0.628,0.565,0.457,0.335,0.219,0.157,0.132,0.157,0.145,0.132,0.194,0.17,0.079,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.324,0.792,0.781,0.596,0.501,0.554,0.457,0.335,0.446,0.617,0.731,0.751,0.628,0.565,0.522,0.617,0.659,0.71,0.792,0.679,0.659,0.628,0.617,0.586,0.565,0.586,0.575,0.446,0.289,0.182,0.17,0.182,0.132,0.132,0.119,0.119,0.182,0.266,0.266,0.313,0.207,0.219,0.182,0.182,0.182,0.182,0.207,0.182,0.231,0.182,0.182,0.194,0.243,0.347,0.533,0.659,0.669,0.648,0.586,0.575,0.501,0.457,0.38,0.289,0.254,0.182,0.119,0.132,0.132,0.092,0.035,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.436,0.872,0.741,0.575,0.565,0.533,0.369,0.313,0.313,0.425,0.659,0.71,0.659,0.638,0.522,0.533,0.38,0.358,0.414,0.533,0.586,0.648,0.617,0.617,0.586,0.554,0.522,0.278,0.17,0.157,0.182,0.207,0.157,0.132,0.119,0.079,0.092,0.145,0.182,0.231,0.289,0.254,0.194,0.182,0.17,0.182,0.182,0.182,0.207,0.219,0.219,0.17,0.182,0.182,0.194,0.194,0.335,0.533,0.648,0.617,0.543,0.543,0.565,0.522,0.565,0.522,0.38,0.369,0.335,0.278,0.182,0.132,0.05,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.479,0.862,0.679,0.596,0.69,0.72,0.543,0.38,0.289,0.369,0.533,0.596,0.617,0.607,0.543,0.522,0.414,0.501,0.391,0.358,0.17,0.231,0.301,0.511,0.565,0.533,0.347,0.194,0.132,0.182,0.194,0.182,0.182,0.182,0.157,0.092,0.035,0.05,0.106,0.132,0.182,0.194,0.243,0.145,0.157,0.17,0.182,0.145,0.182,0.157,0.157,0.219,0.182,0.17,0.182,0.182,0.207,0.194,0.207,0.358,0.511,0.554,0.586,0.543,0.522,0.468,0.457,0.38,0.391,0.324,0.278,0.243,0.182,0.132,0.065,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.079,0.522,0.638,0.741,0.832,1.0,0.911,0.832,0.71,0.607,0.596,0.822,0.892,0.832,0.731,0.543,0.501,0.501,0.522,0.391,0.391,0.289,0.335,0.219,0.145,0.145,0.243,0.219,0.194,0.194,0.182,0.182,0.182,0.194,0.207,0.207,0.132,0.079,0.035,0.019,0.145,0.289,0.436,0.436,0.501,0.391,0.243,0.194,0.207,0.207,0.207,0.17,0.145,0.157,0.17,0.17,0.17,0.17,0.17,0.182,0.194,0.194,0.207,0.301,0.436,0.479,0.468,0.468,0.468,0.403,0.358,0.324,0.266,0.243,0.182,0.145,0.119,0.079,0.019,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.425,0.617,0.638,0.99,1.0,0.971,0.832,0.731,0.565,0.501,0.71,0.961,1.0,1.0,0.971,0.961,0.842,0.771,0.543,0.446,0.324,0.313,0.207,0.194,0.157,0.145,0.17,0.145,0.157,0.17,0.207,0.231,0.219,0.194,0.17,0.17,0.119,0.05,0.019,0.092,0.414,0.543,0.669,0.586,0.751,0.659,0.533,0.479,0.501,0.511,0.457,0.511,0.425,0.403,0.324,0.266,0.194,0.207,0.182,0.17,0.207,0.207,0.182,0.157,0.157,0.219,0.266,0.369,0.358,0.369,0.324,0.301,0.289,0.289,0.207,0.145,0.119,0.106,0.079,0.019,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.313,0.522,0.511,0.911,0.99,0.862,0.761,0.7,0.586,0.468,0.522,0.812,0.931,0.941,0.951,0.892,0.911,0.911,0.882,0.842,0.7,0.679,0.446,0.324,0.231,0.119,0.145,0.119,0.17,0.157,0.17,0.17,0.182,0.17,0.182,0.17,0.132,0.079,0.079,0.106,0.207,0.425,0.543,0.648,0.511,0.648,0.638,0.596,0.565,0.457,0.501,0.543,0.543,0.565,0.586,0.533,0.554,0.468,0.457,0.335,0.231,0.182,0.207,0.207,0.17,0.145,0.132,0.132,0.132,0.106,0.119,0.157,0.17,0.157,0.182,0.194,0.157,0.132,0.119,0.092,0.05,0.019,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.157,0.49,0.575,0.892,1.0,0.902,0.741,0.679,0.638,0.479,0.436,0.596,0.852,0.911,0.971,0.941,0.852,0.862,0.832,0.852,0.741,0.781,0.69,0.648,0.679,0.49,0.425,0.194,0.194,0.145,0.119,0.119,0.157,0.157,0.145,0.157,0.145,0.119,0.207,0.17,0.106,0.219,0.414,0.543,0.596,0.49,0.659,0.607,0.575,0.543,0.468,0.511,0.49,0.522,0.501,0.575,0.511,0.533,0.511,0.607,0.586,0.468,0.391,0.278,0.17,0.145,0.182,0.182,0.157,0.17,0.092,0.106,0.079,0.092,0.065,0.065,0.065,0.05,0.035,0.05,0.065,0.065,0.035,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.289,0.533,0.771,1.0,1.0,0.872,0.69,0.628,0.554,0.522,0.511,0.7,0.941,0.941,0.931,0.911,0.842,0.892,0.832,0.822,0.781,0.792,0.596,0.669,0.511,0.628,0.501,0.49,0.49,0.38,0.301,0.145,0.157,0.092,0.157,0.119,0.17,0.347,0.254,0.079,0.092,0.254,0.457,0.425,0.596,0.479,0.638,0.628,0.565,0.543,0.511,0.501,0.468,0.457,0.457,0.501,0.479,0.468,0.554,0.565,0.533,0.554,0.554,0.479,0.358,0.219,0.145,0.119,0.106,0.106,0.106,0.106,0.079,0.065,0.079,0.065,0.035,0.05,0.035,0.019,0.019,0.05,0.035,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.289,0.731,0.951,0.971,0.842,0.781,0.669,0.596,0.501,0.358,0.468,0.862,1.0,0.872,0.931,0.961,0.872,0.812,0.892,0.72,0.802,0.659,0.659,0.522,0.565,0.522,0.425,0.511,0.436,0.586,0.414,0.501,0.324,0.278,0.182,0.106,0.182,0.335,0.207,0.035,0.092,0.278,0.347,0.358,0.436,0.347,0.479,0.522,0.533,0.49,0.49,0.479,0.425,0.479,0.468,0.533,0.468,0.501,0.522,0.511,0.522,0.533,0.522,0.522,0.522,0.479,0.369,0.254,0.157,0.132,0.092,0.05,0.035,0.065,0.05,0.079,0.065,0.05,0.035,0.035,0.019,0.019,0.019,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.391,0.892,0.862,0.638,0.638,0.511,0.49,0.369,0.369,0.457,0.7,0.892,1.0,1.0,1.0,0.892,0.852,0.842,0.802,0.731,0.669,0.751,0.607,0.501,0.554,0.468,0.554,0.425,0.511,0.501,0.479,0.533,0.425,0.522,0.468,0.347,0.132,0.119,0.092,0.019,0.065,0.106,0.132,0.092,0.132,0.17,0.182,0.182,0.194,0.231,0.219,0.194,0.243,0.313,0.313,0.436,0.468,0.49,0.522,0.565,0.575,0.522,0.543,0.586,0.511,0.446,0.457,0.457,0.436,0.358,0.278,0.207,0.182,0.106,0.065,0.05,0.035,0.035,0.035,0.035,0.019,0.019,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.278,0.781,0.792,0.607,0.522,0.425,0.266,0.243,0.119,0.119,0.219,0.479,0.659,0.802,0.802,0.802,0.812,0.771,0.882,0.781,0.741,0.659,0.669,0.533,0.648,0.446,0.543,0.533,0.468,0.565,0.403,0.49,0.425,0.511,0.479,0.479,0.468,0.335,0.119,0.0,0.0,0.035,0.106,0.132,0.092,0.157,0.194,0.207,0.219,0.194,0.157,0.145,0.119,0.145,0.145,0.106,0.157,0.157,0.231,0.347,0.347,0.425,0.522,0.522,0.522,0.511,0.468,0.425,0.425,0.425,0.369,0.301,0.324,0.347,0.289,0.243,0.17,0.119,0.092,0.065,0.035,0.019,0.019,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.119,0.659,0.812,0.638,0.511,0.49,0.335,0.278,0.182,0.119,0.092,0.207,0.511,0.69,0.607,0.543,0.533,0.522,0.511,0.436,0.501,0.446,0.586,0.457,0.468,0.575,0.522,0.565,0.457,0.565,0.479,0.468,0.522,0.457,0.554,0.468,0.501,0.457,0.313,0.219,0.065,0.0,0.05,0.132,0.119,0.106,0.132,0.182,0.182,0.278,0.254,0.145,0.132,0.157,0.119,0.106,0.119,0.132,0.119,0.119,0.132,0.119,0.157,0.219,0.278,0.425,0.457,0.457,0.457,0.414,0.391,0.335,0.324,0.301,0.266,0.254,0.243,0.194,0.17,0.132,0.092,0.079,0.065,0.035,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.425,0.792,0.607,0.436,0.479,0.347,0.243,0.194,0.092,0.065,0.132,0.38,0.596,0.596,0.575,0.607,0.533,0.436,0.49,0.358,0.369,0.301,0.231,0.145,0.219,0.182,0.313,0.301,0.358,0.511,0.446,0.522,0.425,0.457,0.403,0.501,0.479,0.369,0.231,0.157,0.065,0.035,0.065,0.119,0.092,0.132,0.145,0.17,0.17,0.266,0.219,0.17,0.182,0.132,0.106,0.106,0.145,0.145,0.106,0.092,0.119,0.157,0.157,0.157,0.106,0.145,0.194,0.254,0.335,0.391,0.358,0.313,0.313,0.278,0.278,0.254,0.219,0.194,0.182,0.145,0.119,0.092,0.065,0.05,0.035,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.132,0.638,0.679,0.554,0.403,0.414,0.254,0.254,0.132,0.092,0.092,0.266,0.554,0.648,0.628,0.607,0.522,0.49,0.543,0.446,0.436,0.38,0.347,0.182,0.278,0.207,0.092,0.106,0.092,0.157,0.145,0.254,0.289,0.369,0.414,0.446,0.468,0.403,0.301,0.194,0.132,0.019,0.05,0.065,0.092,0.079,0.132,0.119,0.145,0.157,0.243,0.207,0.207,0.145,0.119,0.119,0.106,0.145,0.119,0.119,0.106,0.132,0.157,0.145,0.17,0.145,0.145,0.132,0.119,0.145,0.194,0.278,0.289,0.254,0.289,0.289,0.254,0.207,0.194,0.157,0.119,0.119,0.092,0.065,0.05,0.035,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.065,0.436,0.607,0.596,0.49,0.425,0.335,0.278,0.207,0.065,0.079,0.157,0.425,0.648,0.69,0.617,0.565,0.533,0.543,0.511,0.369,0.457,0.38,0.301,0.194,0.219,0.132,0.207,0.132,0.132,0.106,0.092,0.119,0.106,0.17,0.194,0.313,0.38,0.369,0.278,0.145,0.079,0.05,0.092,0.119,0.219,0.17,0.194,0.194,0.231,0.243,0.243,0.17,0.145,0.065,0.079,0.079,0.092,0.092,0.092,0.079,0.106,0.092,0.119,0.145,0.157,0.119,0.132,0.132,0.145,0.17,0.132,0.079,0.092,0.132,0.157,0.157,0.182,0.182,0.17,0.132,0.106,0.092,0.079,0.065,0.035,0.035,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.358,0.669,0.607,0.511,0.358,0.335,0.278,0.266,0.106,0.092,0.106,0.254,0.436,0.628,0.669,0.554,0.607,0.575,0.522,0.38,0.425,0.369,0.369,0.182,0.194,0.182,0.132,0.145,0.106,0.119,0.092,0.132,0.119,0.145,0.119,0.132,0.079,0.132,0.278,0.231,0.065,0.065,0.157,0.254,0.358,0.468,0.369,0.501,0.446,0.468,0.479,0.457,0.436,0.301,0.243,0.278,0.219,0.182,0.157,0.17,0.145,0.106,0.065,0.119,0.106,0.092,0.132,0.145,0.119,0.119,0.132,0.132,0.119,0.092,0.079,0.05,0.035,0.05,0.065,0.065,0.065,0.079,0.079,0.079,0.065,0.035,0.019,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.194,0.565,0.628,0.511,0.369,0.369,0.289,0.182,0.145,0.157,0.079,0.119,0.358,0.554,0.628,0.586,0.586,0.565,0.457,0.511,0.414,0.391,0.324,0.301,0.145,0.17,0.119,0.092,0.092,0.106,0.079,0.106,0.119,0.119,0.132,0.132,0.119,0.157,0.119,0.079,0.05,0.019,0.119,0.219,0.289,0.358,0.501,0.391,0.468,0.457,0.522,0.511,0.49,0.468,0.436,0.414,0.457,0.414,0.414,0.391,0.403,0.347,0.313,0.301,0.254,0.182,0.194,0.132,0.092,0.119,0.145,0.119,0.119,0.106,0.079,0.05,0.05,0.05,0.05,0.035,0.05,0.035,0.019,0.019,0.019,0.035,0.035,0.035,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.079,0.457,0.586,0.617,0.554,0.38,0.414,0.254,0.254,0.194,0.157,0.157,0.219,0.403,0.501,0.575,0.586,0.468,0.479,0.436,0.38,0.414,0.335,0.38,0.254,0.231,0.132,0.079,0.106,0.119,0.092,0.092,0.145,0.092,0.119,0.145,0.157,0.157,0.132,0.132,0.092,0.019,0.065,0.157,0.266,0.335,0.391,0.403,0.358,0.479,0.457,0.522,0.522,0.501,0.468,0.479,0.436,0.347,0.403,0.347,0.358,0.369,0.369,0.391,0.414,0.391,0.38,0.369,0.369,0.278,0.145,0.106,0.132,0.119,0.106,0.065,0.065,0.05,0.035,0.035,0.05,0.05,0.035,0.019,0.035,0.019,0.0,0.0,0.0,0.019],[0.0,0.0,0.0,0.0,0.0,0.0,0.231,0.659,0.822,0.822,0.638,0.69,0.554,0.436,0.501,0.479,0.358,0.425,0.543,0.648,0.71,0.812,0.72,0.628,0.607,0.511,0.425,0.414,0.301,0.301,0.17,0.157,0.106,0.119,0.092,0.092,0.092,0.145,0.132,0.145,0.132,0.145,0.145,0.145,0.132,0.106,0.05,0.05,0.157,0.194,0.289,0.324,0.511,0.347,0.391,0.436,0.436,0.49,0.457,0.425,0.457,0.414,0.358,0.403,0.369,0.335,0.369,0.335,0.369,0.38,0.347,0.369,0.468,0.391,0.38,0.446,0.38,0.278,0.157,0.092,0.079,0.079,0.079,0.065,0.05,0.05,0.05,0.05,0.035,0.019,0.019,0.019,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.119,0.565,0.822,0.781,0.648,0.638,0.543,0.565,0.554,0.403,0.425,0.522,0.565,0.679,0.812,0.872,0.842,0.842,0.842,0.771,0.71,0.751,0.638,0.659,0.446,0.414,0.324,0.194,0.157,0.092,0.106,0.092,0.079,0.05,0.106,0.119,0.119,0.119,0.119,0.106,0.035,0.019,0.092,0.17,0.254,0.369,0.313,0.414,0.301,0.425,0.425,0.468,0.468,0.425,0.391,0.358,0.358,0.369,0.391,0.38,0.347,0.358,0.335,0.358,0.335,0.391,0.369,0.347,0.324,0.468,0.468,0.38,0.347,0.347,0.266,0.194,0.106,0.05,0.05,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.358,0.751,0.761,0.628,0.669,0.659,0.49,0.554,0.403,0.369,0.479,0.49,0.628,0.751,0.802,0.812,0.872,0.852,0.731,0.761,0.761,0.731,0.596,0.69,0.501,0.586,0.425,0.436,0.313,0.369,0.254,0.301,0.254,0.231,0.182,0.119,0.092,0.119,0.092,0.065,0.0,0.05,0.132,0.17,0.301,0.313,0.347,0.358,0.369,0.414,0.358,0.436,0.436,0.403,0.369,0.324,0.369,0.391,0.335,0.266,0.324,0.358,0.313,0.335,0.324,0.358,0.289,0.324,0.335,0.436,0.457,0.425,0.391,0.335,0.335,0.289,0.254,0.254,0.182,0.132,0.079,0.065,0.035,0.019,0.0,0.0,0.019,0.019,0.019,0.0,0.0],[0.0,0.0,0.0,0.0,0.182,0.648,0.7,0.586,0.501,0.669,0.457,0.554,0.369,0.335,0.414,0.49,0.446,0.596,0.679,0.771,0.812,0.781,0.771,0.761,0.792,0.751,0.596,0.659,0.554,0.49,0.511,0.335,0.369,0.446,0.403,0.335,0.403,0.358,0.446,0.358,0.324,0.301,0.194,0.079,0.035,0.0,0.05,0.079,0.106,0.182,0.17,0.301,0.254,0.254,0.278,0.313,0.369,0.391,0.369,0.313,0.347,0.313,0.278,0.335,0.313,0.266,0.347,0.324,0.324,0.254,0.301,0.335,0.38,0.324,0.38,0.436,0.403,0.358,0.313,0.289,0.266,0.254,0.243,0.194,0.182,0.157,0.145,0.119,0.092,0.065,0.035,0.019,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.05,0.436,0.7,0.669,0.586,0.69,0.617,0.446,0.446,0.369,0.436,0.414,0.479,0.533,0.638,0.731,0.741,0.822,0.842,0.731,0.731,0.741,0.679,0.586,0.648,0.425,0.501,0.369,0.301,0.391,0.369,0.313,0.324,0.313,0.324,0.347,0.391,0.347,0.324,0.278,0.182,0.0,0.0,0.0,0.019,0.035,0.079,0.065,0.119,0.132,0.092,0.079,0.079,0.106,0.132,0.132,0.132,0.157,0.145,0.182,0.231,0.207,0.219,0.207,0.219,0.266,0.243,0.278,0.231,0.266,0.301,0.369,0.369,0.324,0.335,0.301,0.266,0.254,0.243,0.194,0.17,0.17,0.145,0.132,0.106,0.106,0.065,0.065,0.05,0.035,0.019,0.019,0.0],[0.0,0.0,0.019,0.324,0.659,0.7,0.617,0.554,0.638,0.501,0.446,0.369,0.468,0.403,0.457,0.446,0.596,0.7,0.751,0.741,0.751,0.792,0.771,0.751,0.638,0.679,0.628,0.533,0.391,0.501,0.313,0.414,0.335,0.313,0.254,0.403,0.266,0.301,0.301,0.347,0.347,0.301,0.278,0.119,0.0,0.0,0.019,0.019,0.079,0.065,0.079,0.106,0.079,0.132,0.132,0.119,0.106,0.092,0.092,0.079,0.065,0.065,0.079,0.05,0.05,0.065,0.079,0.05,0.05,0.065,0.106,0.079,0.106,0.132,0.17,0.266,0.313,0.278,0.231,0.219,0.219,0.182,0.145,0.132,0.145,0.119,0.092,0.079,0.065,0.05,0.05,0.035,0.019,0.019,0.0,0.0],[0.0,0.0,0.182,0.511,0.628,0.575,0.425,0.511,0.414,0.436,0.425,0.347,0.436,0.446,0.479,0.501,0.607,0.638,0.731,0.751,0.741,0.741,0.781,0.71,0.679,0.543,0.628,0.501,0.479,0.391,0.38,0.38,0.347,0.243,0.278,0.358,0.278,0.324,0.266,0.347,0.335,0.266,0.182,0.019,0.0,0.0,0.019,0.035,0.079,0.065,0.079,0.106,0.092,0.119,0.119,0.119,0.106,0.106,0.092,0.092,0.106,0.079,0.05,0.065,0.035,0.05,0.035,0.035,0.065,0.05,0.05,0.05,0.106,0.079,0.065,0.065,0.106,0.17,0.207,0.219,0.207,0.17,0.157,0.132,0.132,0.132,0.092,0.079,0.065,0.05,0.05,0.035,0.019,0.019,0.0,0.0],[0.0,0.119,0.289,0.254,0.243,0.182,0.194,0.182,0.182,0.194,0.194,0.254,0.207,0.301,0.391,0.446,0.468,0.565,0.617,0.596,0.659,0.751,0.69,0.554,0.751,0.586,0.575,0.436,0.543,0.358,0.425,0.278,0.289,0.254,0.324,0.278,0.301,0.301,0.278,0.301,0.278,0.219,0.079,0.0,0.0,0.0,0.035,0.035,0.079,0.05,0.079,0.079,0.092,0.092,0.079,0.079,0.092,0.079,0.065,0.079,0.05,0.035,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.035,0.065,0.05,0.065,0.05,0.079,0.079,0.079,0.079,0.079,0.092,0.119,0.132,0.132,0.132,0.106,0.119,0.106,0.079,0.065,0.05,0.035,0.035,0.019,0.019,0.0,0.0],[0.065,0.17,0.182,0.182,0.17,0.194,0.194,0.119,0.182,0.106,0.132,0.106,0.145,0.157,0.207,0.207,0.289,0.347,0.358,0.347,0.391,0.369,0.324,0.403,0.369,0.347,0.335,0.324,0.347,0.313,0.313,0.219,0.301,0.266,0.289,0.278,0.289,0.219,0.278,0.243,0.254,0.17,0.019,0.0,0.0,0.035,0.035,0.05,0.065,0.065,0.092,0.079,0.106,0.106,0.092,0.092,0.092,0.092,0.065,0.065,0.065,0.05,0.035,0.05,0.035,0.035,0.035,0.019,0.05,0.05,0.079,0.05,0.065,0.065,0.079,0.092,0.092,0.079,0.079,0.05,0.035,0.035,0.035,0.05,0.05,0.065,0.05,0.065,0.065,0.05,0.035,0.035,0.019,0.019,0.0,0.0],[0.132,0.157,0.157,0.182,0.132,0.157,0.119,0.132,0.106,0.132,0.145,0.106,0.145,0.17,0.207,0.243,0.324,0.391,0.369,0.335,0.278,0.335,0.254,0.278,0.145,0.219,0.145,0.132,0.092,0.119,0.092,0.106,0.119,0.119,0.157,0.231,0.219,0.219,0.243,0.207,0.219,0.132,0.0,0.0,0.0,0.019,0.019,0.035,0.065,0.079,0.065,0.065,0.092,0.079,0.065,0.065,0.065,0.065,0.05,0.05,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.05,0.035,0.065,0.05,0.05,0.065,0.05,0.079,0.079,0.079,0.065,0.065,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.0],[0.132,0.145,0.157,0.157,0.119,0.145,0.145,0.132,0.092,0.092,0.132,0.157,0.157,0.182,0.17,0.219,0.313,0.335,0.335,0.358,0.301,0.335,0.254,0.278,0.207,0.194,0.145,0.157,0.106,0.132,0.05,0.065,0.065,0.065,0.065,0.05,0.065,0.092,0.119,0.145,0.194,0.106,0.019,0.065,0.106,0.092,0.092,0.132,0.145,0.119,0.119,0.132,0.106,0.106,0.092,0.092,0.065,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.019,0.035,0.05,0.035,0.05,0.05,0.065,0.065,0.065,0.065,0.065,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.065,0.079,0.092,0.065,0.065,0.106,0.106,0.065,0.079,0.092,0.106,0.106,0.17,0.119,0.17,0.231,0.243,0.243,0.243,0.254,0.254,0.254,0.254,0.182,0.207,0.145,0.119,0.106,0.065,0.092,0.05,0.05,0.035,0.05,0.05,0.065,0.065,0.065,0.065,0.05,0.065,0.05,0.065,0.106,0.157,0.145,0.207,0.194,0.17,0.219,0.243,0.243,0.231,0.207,0.17,0.182,0.17,0.157,0.145,0.119,0.106,0.132,0.119,0.092,0.106,0.106,0.106,0.092,0.106,0.079,0.092,0.079,0.065,0.065,0.065,0.05,0.05,0.05,0.05,0.05,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.079,0.079,0.079,0.065,0.079,0.079,0.035,0.092,0.079,0.079,0.092,0.065,0.092,0.092,0.207,0.207,0.194,0.207,0.243,0.194,0.207,0.182,0.219,0.17,0.132,0.079,0.092,0.079,0.079,0.05,0.035,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.065,0.05,0.05,0.035,0.065,0.092,0.145,0.119,0.182,0.157,0.219,0.207,0.219,0.219,0.182,0.17,0.157,0.157,0.17,0.17,0.17,0.182,0.145,0.157,0.145,0.119,0.157,0.132,0.132,0.132,0.157,0.132,0.157,0.157,0.17,0.132,0.132,0.106,0.092,0.05,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.05,0.05,0.05,0.035,0.035,0.035,0.05,0.065,0.05,0.092,0.065,0.092,0.079,0.106,0.145,0.132,0.145,0.157,0.145,0.17,0.182,0.157,0.182,0.145,0.106,0.079,0.065,0.035,0.065,0.035,0.05,0.035,0.05,0.035,0.05,0.05,0.05,0.035,0.05,0.05,0.035,0.05,0.079,0.106,0.092,0.092,0.157,0.145,0.157,0.17,0.182,0.17,0.157,0.157,0.119,0.106,0.106,0.119,0.119,0.119,0.132,0.119,0.106,0.092,0.119,0.092,0.106,0.106,0.119,0.132,0.132,0.119,0.132,0.106,0.106,0.119,0.106,0.079,0.065,0.05,0.035,0.019,0.0,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.035,0.035,0.035,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.065,0.065,0.092,0.065,0.079,0.106,0.092,0.079,0.119,0.092,0.132,0.092,0.092,0.065,0.092,0.019,0.019,0.019,0.019,0.035,0.019,0.019,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.05,0.065,0.092,0.065,0.119,0.119,0.132,0.132,0.106,0.106,0.106,0.106,0.092,0.079,0.079,0.092,0.092,0.079,0.079,0.079,0.079,0.092,0.092,0.092,0.065,0.092,0.079,0.092,0.106,0.132,0.092,0.119,0.092,0.079,0.065,0.065,0.065,0.065,0.065,0.05,0.05,0.035,0.019,0.019,0.019,0.0,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.019,0.019,0.035,0.035,0.035,0.035,0.035,0.065,0.065,0.05,0.079,0.065,0.079,0.065,0.079,0.092,0.079,0.079,0.092,0.092,0.092,0.065,0.065,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.035,0.035,0.05,0.079,0.079,0.092,0.079,0.106,0.106,0.079,0.079,0.079,0.065,0.065,0.079,0.065,0.065,0.065,0.065,0.05,0.065,0.065,0.065,0.05,0.05,0.065,0.065,0.065,0.079,0.065,0.079,0.079,0.079,0.079,0.079,0.065,0.065,0.05,0.05,0.05,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.019,0.019,0.019,0.019,0.019,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.05,0.05,0.065,0.065,0.065,0.065,0.065,0.065,0.035,0.035,0.035,0.019,0.019,0.019,0.0,0.019,0.019,0.0,0.0,0.019,0.0,0.019,0.0,0.0,0.019,0.035,0.035,0.035,0.05,0.05,0.05,0.065,0.065,0.065,0.05,0.065,0.065,0.05,0.065,0.065,0.05,0.05,0.065,0.065,0.035,0.035,0.05,0.035,0.035,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.05,0.065,0.035,0.05,0.05,0.035,0.035,0.035,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.019,0.0,0.0,0.0,0.0,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.019,0.0,0.019,0.019,0.019,0.019,0.019,0.019,0.035,0.035,0.035,0.035,0.035,0.019,0.035,0.035,0.019,0.019,0.035,0.035,0.035,0.035,0.019,0.019,0.035,0.019,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.035,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.0,0.019,0.019,0.0,0.0,0.019,0.0,0.0,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.019,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.019,0.019,0.019,0.0,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.019,0.0,0.019,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]];
+    let currentPortraitGrid = DEFAULT_PORTRAIT_GRID.map(r => r.slice());
+    let uploadedImageElement = null;
+    let motionPaused = false;
+    let animFrameId = null;
+    let tick = 0;
+
+    const crabEl = document.getElementById("asciiCrab");
+    const portraitEl = document.getElementById("asciiPortrait");
+    const toggleMotionBtn = document.getElementById("toggleMotionBtn");
+
+    function renderGrid(grid, phaseOffset) {
+      const rampLen = RAMP.length - 1;
+      let out = "";
+      for (let r = 0; r < grid.length; r++) {
+        const row = grid[r];
+        let line = "";
+        for (let c = 0; c < row.length; c++) {
+          const base = row[c];
+          if (base <= 0.025) {
+            line += " ";
+          } else {
+            const wave = motionPaused
+              ? 0
+              : Math.sin(tick * 0.045 + r * 0.22 + c * 0.15 + phaseOffset) * 0.055;
+            const val = Math.max(0, Math.min(1, base + wave));
+            const idx = Math.round(val * rampLen);
+            line += RAMP[idx];
+          }
+        }
+        out += line + "\n";
+      }
+      return out;
+    }
+
+    function animateAscii() {
+      if (!motionPaused) {
+        tick += 1;
+      }
+      if (crabEl) crabEl.textContent = renderGrid(CRAB_GRID, 0);
+      if (portraitEl) portraitEl.textContent = renderGrid(currentPortraitGrid, 2.1);
+      if (!motionPaused) {
+        animFrameId = requestAnimationFrame(animateAscii);
+      }
+    }
+
+    toggleMotionBtn.addEventListener("click", () => {
+      motionPaused = !motionPaused;
+      toggleMotionBtn.textContent = motionPaused ? "Resume motion" : "Pause motion";
+      if (!motionPaused) {
+        if (animFrameId) cancelAnimationFrame(animFrameId);
+        animFrameId = requestAnimationFrame(animateAscii);
+      }
+    });
+
+    // Smooth back to top
+    document.getElementById("backToTopBtn").addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Photo-to-ASCII Converter Modal
+    const photoModal = document.getElementById("photoModal");
+    const openPhotoModalBtn = document.getElementById("openPhotoModalBtn");
+    const closePhotoModalBtn = document.getElementById("closePhotoModalBtn");
+    const donePhotoModalBtn = document.getElementById("donePhotoModalBtn");
+    const photoFileInput = document.getElementById("photoFileInput");
+    const contrastSlider = document.getElementById("contrastSlider");
+    const brightnessSlider = document.getElementById("brightnessSlider");
+    const contrastVal = document.getElementById("contrastVal");
+    const brightnessVal = document.getElementById("brightnessVal");
+    const resetPortraitBtn = document.getElementById("resetPortraitBtn");
+
+    function openPhotoModal() {
+      photoModal.classList.remove("hidden");
+      photoModal.classList.add("flex");
+    }
+    function closePhotoModal() {
+      photoModal.classList.add("hidden");
+      photoModal.classList.remove("flex");
+    }
+
+    openPhotoModalBtn.addEventListener("click", openPhotoModal);
+    closePhotoModalBtn.addEventListener("click", closePhotoModal);
+    donePhotoModalBtn.addEventListener("click", closePhotoModal);
+
+    function processUploadedImage() {
+      if (!uploadedImageElement) return;
+      const cols = 82;
+      const rows = 58;
+      const canvas = document.createElement("canvas");
+      canvas.width = cols;
+      canvas.height = rows;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, cols, rows);
+
+      // Center crop image into cols x rows
+      const imgRatio = uploadedImageElement.width / uploadedImageElement.height;
+      const targetRatio = (cols * 0.55) / rows;
+      let sx = 0, sy = 0, sw = uploadedImageElement.width, sh = uploadedImageElement.height;
+      if (imgRatio > targetRatio) {
+        sw = uploadedImageElement.height * targetRatio;
+        sx = (uploadedImageElement.width - sw) / 2;
+      } else {
+        sh = uploadedImageElement.width / targetRatio;
+        sy = (uploadedImageElement.height - sh) / 2;
+      }
+      ctx.drawImage(uploadedImageElement, sx, sy, sw, sh, 0, 0, cols, rows);
+      const imgData = ctx.getImageData(0, 0, cols, rows).data;
+
+      const contrast = parseFloat(contrastSlider.value);
+      const brightness = parseFloat(brightnessSlider.value);
+      const newGrid = [];
+
+      for (let r = 0; r < rows; r++) {
+        const rowArr = [];
+        for (let c = 0; c < cols; c++) {
+          const i = (r * cols + c) * 4;
+          let lum = (0.299 * imgData[i] + 0.587 * imgData[i + 1] + 0.114 * imgData[i + 2]) / 255;
+          lum = ((lum - 0.5) * contrast + 0.5) * brightness;
+          // Radial vignette so edges fade cleanly into the black background
+          const dx = (c - cols / 2) / (cols / 2);
+          const dy = (r - rows / 2) / (rows / 2);
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const vig = Math.max(0, 1 - Math.pow(dist * 0.92, 2.4));
+          lum = Math.max(0, Math.min(1, lum * vig));
+          rowArr.push(Number(lum.toFixed(3)));
+        }
+        newGrid.push(rowArr);
+      }
+      currentPortraitGrid = newGrid;
+      try {
+        localStorage.setItem("ankit_custom_portrait_grid_v2", JSON.stringify(newGrid));
+      } catch (e) {}
+      if (motionPaused && portraitEl) {
+        portraitEl.textContent = renderGrid(currentPortraitGrid, 2.1);
+      }
+    }
+
+    photoFileInput.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          uploadedImageElement = img;
+          processUploadedImage();
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    contrastSlider.addEventListener("input", () => {
+      contrastVal.textContent = parseFloat(contrastSlider.value).toFixed(2);
+      processUploadedImage();
+    });
+
+    brightnessSlider.addEventListener("input", () => {
+      brightnessVal.textContent = parseFloat(brightnessSlider.value).toFixed(2);
+      processUploadedImage();
+    });
+
+    resetPortraitBtn.addEventListener("click", () => {
+      uploadedImageElement = null;
+      currentPortraitGrid = DEFAULT_PORTRAIT_GRID.map(r => r.slice());
+      try {
+        localStorage.removeItem("ankit_custom_portrait_grid_v2");
+      } catch (e) {}
+      if (motionPaused && portraitEl) {
+        portraitEl.textContent = renderGrid(currentPortraitGrid, 2.1);
+      }
+    });
+
+    // Restore custom portrait from localStorage if previously saved
+    try {
+      const saved = localStorage.getItem("ankit_custom_portrait_grid_v2");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 10) {
+          currentPortraitGrid = parsed;
+        }
+      }
+    } catch (e) {}
+
+    // Reader Modal Content for Projects & Writing
+    const MODAL_CONTENT = {
+      strata: {
+        tag: "Turbin3 Q3 2026 Capstone · Solana Anchor & Token-2022",
+        title: "Strata Protocol — Dual-Vault RWA & Permissionless Rebalancing",
+        body: `
+          <p><strong>Strata Protocol</strong> transforms tokenized Real-World Assets (RWAs) into composable, yield-bearing building blocks on Solana via a two-tier vault architecture:</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Vault 1 (<code>xau_carry_vault</code> — REQ01):</strong> Delta-neutral strategy vault accepting USDC deposits and issuing 1:1 receipt tokens (<code>$vXAU</code>) with PDA-controlled custody.</li>
+            <li><strong>Vault 2 (<code>basket_weighted_vault</code> — REQ02):</strong> Multi-asset RWA index engine accepting a 4-asset recipe (<code>vXAU</code>, <code>PAXG</code>, <code>USDY</code>, <code>SPYx</code>) with deterministic pro-rata share minting (<code>basket_out = supply * min(amount_i / bal_i)</code>) and SPL Token-2022 <code>transfer_checked</code> integration.</li>
+            <li><strong>Permissionless Dutch-Auction Rebalancing (<code>rebalance_basket</code> — REQ03):</strong> Consumes read-only Pyth <code>PriceUpdateV2</code> feeds, enforces staleness and confidence bounds, and offers an oracle-backed discount so external arbitrageurs realign portfolio weights toward target BPS without centralized keepers.</li>
+          </ul>
+          <pre class="bg-black border border-white/10 p-3 rounded text-xs font-mono text-[#a3e635] overflow-x-auto">1. Oracle Check   ==> Enforce Pyth PriceUpdateV2 freshness &amp; bounds
+2. Drift Calc     ==> Compare target BPS vs. actual vault balances
+3. Dutch Auction  ==> Discount scales with slot height until fulfilled
+4. Atomic CPI     ==> SPL Token &amp; Token-2022 transfer_checked execution</pre>
+        `
+      },
+      openbounty: {
+        tag: "Solana Devnet · Ed25519 Attestation Escrow",
+        title: "OpenBounty — Trustless GitHub Issue Bounties on Solana",
+        body: `
+          <p><strong>OpenBounty</strong> makes open-source bounty commitments verifiable on-chain by binding GitHub issue resolution directly to PDA-controlled USDC escrow vaults:</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Maintainers pre-fund a specific GitHub repository issue with USDC into a deterministic Solana PDA escrow account.</li>
+            <li>Contributors bind their immutable GitHub numeric user ID to a Solana payout wallet via a signed challenge message.</li>
+            <li>When a pull request formally closes the funded issue and merges into the default branch, the verifier signs a canonical Ed25519 merge attestation.</li>
+            <li>The Solana program validates the Ed25519 signature instruction, releases the exact USDC bounty to the contributor, and writes an immutable on-chain payment receipt PDA.</li>
+          </ul>
+        `
+      },
+      token22: {
+        tag: "Technical Writing · SPL Token-2022 Security & Compliance",
+        title: "Token-2022 Confidential Transfers vs. Permanent Delegate Seizure Authority",
+        body: `
+          <p>When issuing regulated remittance stablecoins on Solana, issuers frequently combine four core SPL Token-2022 extensions: <code>TransferFeeConfig</code>, <code>MetadataPointer</code>, <code>DefaultAccountState (Frozen)</code>, and <code>MintCloseAuthority</code>, sized strictly via <code>ExtensionType::try_calculate_account_len</code> prior to <code>InitializeMint</code>.</p>
+          <h4 class="text-white font-semibold pt-2">The Confidential State vs. Permanent Delegate Gap</h4>
+          <p>Suppose regulators require a <code>PermanentDelegate</code> to seize funds from sanctioned wallets while users simultaneously demand privacy via <code>ConfidentialTransferMint</code>:</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Public Balance vs. Confidential Balance:</strong> The <code>PermanentDelegate</code> authority can unconditionally transfer or burn tokens sitting in an account's standard public SPL balance.</li>
+            <li><strong>The ElGamal Encryption Boundary:</strong> Once a sanctioned user executes <code>DepositConfidentialTokens</code> and moves their tokens into the confidential pending/available balance encrypted under their ElGamal keypair, a standard <code>PermanentDelegate</code> transfer cannot construct a valid zero-knowledge ciphertext proof without the user's ElGamal decryption key or an explicitly configured Auditor/ElGamal registry hook.</li>
+            <li><strong>Takeaway for Protocol Designers:</strong> Compliance enforcement must occur at the <code>ConfigureAccount</code> / <code>ApproveAccount</code> gate (<code>approve_policy = manual</code>) or via account freezing <em>before</em> balances enter confidential ElGamal state.</li>
+          </ul>
+        `
+      },
+      "dutch-auction": {
+        tag: "Technical Writing · DeFi Mechanism Design",
+        title: "Designing Permissionless Dutch-Auction Rebalancing on Solana",
+        body: `
+          <p>On-chain multi-asset vaults face two recurring hazards: oracle staleness during traditional market closures (e.g., tokenized equities like <code>SPYx</code>) and MEV value leakage during rebalancing.</p>
+          <h4 class="text-white font-semibold pt-2">1. Isolating Oracle Reads from Deposits</h4>
+          <p>Requiring live Pyth price checks inside multi-asset deposit handlers causes deposits to revert whenever equity markets close and oracle timestamps exceed <code>max_age</code>. Using deterministic pro-rata share math (<code>basket_out = supply * min(amount_i / bal_i)</code>) keeps deposits resilient 24/7 while isolating Pyth <code>PriceUpdateV2</code> checks strictly to the rebalancing instruction.</p>
+          <h4 class="text-white font-semibold pt-2">2. Atomic Single-Handler Execution</h4>
+          <p>Splitting deposits or rebalances across multiple instructions creates unminted intermediate states vulnerable to race conditions. Executing all SPL Token and Token-2022 <code>transfer_checked</code> CPIs inside a single atomic Anchor handler guarantees that either all invariant checks pass together or the entire transaction reverts cleanly.</p>
+        `
+      },
+      yieldguard: {
+        tag: "Technical Writing · Institutional RWA Architecture",
+        title: "Enforcing Institutional RWA Compliance with Token-2022 Transfer Hooks",
+        body: `
+          <p><strong>YieldGuard</strong> explores how institutional borrowers can pledge tokenized U.S. Treasuries and private credit as collateral on Solana without violating off-chain transfer restrictions during liquidations.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>By attaching a custom SPL Token-2022 <strong>Transfer Hook</strong> to the collateral mint, every token movement automatically invokes an on-chain compliance verification program.</li>
+            <li>During healthy market operations, collateral remains locked inside PDA vaults. If a position breaches its liquidation threshold, the Transfer Hook verifies that the receiving liquidator account belongs to an allowlisted, KYC-verified institutional backstop pool.</li>
+            <li>Unverified liquidators are rejected at the CPI boundary, guaranteeing regulatory compliance directly at the token instruction layer.</li>
+          </ul>
+        `
+      }
+    };
+
+    const readerModal = document.getElementById("readerModal");
+    const readerTag = document.getElementById("readerTag");
+    const readerTitle = document.getElementById("readerTitle");
+    const readerBody = document.getElementById("readerBody");
+    const closeReaderModalBtn = document.getElementById("closeReaderModalBtn");
+
+    function openReader(key) {
+      const item = MODAL_CONTENT[key];
+      if (!item) return;
+      readerTag.textContent = item.tag;
+      readerTitle.textContent = item.title;
+      readerBody.innerHTML = item.body;
+      readerModal.classList.remove("hidden");
+      readerModal.classList.add("flex");
+    }
+    function closeReader() {
+      readerModal.classList.add("hidden");
+      readerModal.classList.remove("flex");
+    }
+
+    document.querySelectorAll("[data-project-modal]").forEach(btn => {
+      btn.addEventListener("click", () => openReader(btn.getAttribute("data-project-modal")));
+    });
+    document.querySelectorAll("[data-article-modal]").forEach(btn => {
+      btn.addEventListener("click", () => openReader(btn.getAttribute("data-article-modal")));
+    });
+    closeReaderModalBtn.addEventListener("click", closeReader);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closePhotoModal();
+        closeReader();
+      }
+    });
+
+    window.addEventListener("load", () => {
+      animateAscii();
+    });
+  </script>
+</body>
+</html>
